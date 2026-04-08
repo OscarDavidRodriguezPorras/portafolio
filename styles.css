@@ -1,0 +1,323 @@
+header{
+    text-align: center;
+    color: rgb(239, 115, 115);
+}
+
+h2{
+    font-family: sans-serif;
+    font-size: 50px;
+    color: rgb(239, 115, 115);
+}
+
+#presentacion{
+    text-align: center;
+}
+
+#proyectos{
+    border:none;
+    width: 88%;
+    margin: 40px 40px auto auto;
+    margin-bottom: 20px;
+    padding: 25px;
+    background: none;
+    border: none;
+    display: flex;
+    font-size: 20px;
+    padding: 20px;
+    gap: 20%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    
+}
+.proyectos-trabajados{
+    text-align: center;
+    border: none;
+    width: 20%;
+    margin-bottom: 20px;
+    text-decoration: none;
+    background-color: #020617;
+    color: rgb(92, 86, 86);
+    box-shadow: 0px 2px 15px;
+    border-color: rgb(81, 81, 81);
+    border-radius: 16px;
+}
+
+#titulo-p{
+    text-align: center;
+    color: rgb(239, 115, 115);
+}
+
+#proyectos div{
+    display: flex;
+    gap: 16rem;
+}
+
+#imagen-yo{
+    margin: 45px 700px;
+    justify-content: right;
+}
+
+#sobre-mi img{
+    border-radius: 50%;
+}
+
+
+#presentacion{
+    width: 40%;
+    margin: 0 20px;
+    color: rgb(238, 129, 129);
+}
+
+#sobre-mi{
+    border: none;
+    width: 85%;
+    margin: 40px 40px auto auto;
+    margin-bottom: 20px;
+    padding: 25px;
+    box-shadow: 0px 2px 15px; /* sirve para poner un efecto de sombra*/
+    border-color: rgb(81, 81, 81);
+    background-color: #020617;
+}
+
+#sobre-mi p{
+    color: white;
+}
+
+#Trayectoria{
+    border:none;
+    width: 85%;
+    margin: 40px 40px auto auto;
+    margin-bottom: 20px;
+    padding: 25px;
+    box-shadow: 0px 2px 15px;
+    text-align: center;
+    background-color:#111827;
+    border-radius: 16px;
+    border-color: 1px solid rgba(255, 255, 255, 0.1); 
+}
+
+#Trayectoria p{
+    color: white;
+}
+
+#Trayectoria h2{
+    color: rgb(239, 115, 115)
+}
+#Habilidades{
+    border:none;
+    width: 85%;
+    margin: 40px 40px auto auto;
+    margin-bottom: 20px;
+    padding: 25px;
+    box-shadow: 0px 2px 15px; /* sirve para poner un efecto de sombra*/
+    border-color: black;
+    text-align: center;
+    background-color: #020617;
+    background-size: 100%;
+}
+
+#Conocimientos{
+    border: none;
+    width: 85%;
+    margin: 40px 40px auto auto;
+    margin-bottom: 20px;
+    padding: 25px;
+    box-shadow: 0px 2px 15px; /* sirve para poner un efecto de sombra*/
+    border-color: black;
+    text-align: center;
+    background:none;
+}
+
+#Formulario{
+    border:none;
+    width: 85%;
+    margin: 40px 40px auto auto;
+    margin-bottom: 20px;
+    padding: 25px;
+    background: none;
+    color: #4f46e5;
+}
+
+#Titulo-f{
+    text-align: center;
+}
+
+body{
+    background: linear-gradient(135deg, #0f172a, #020617);
+}
+button:hover{
+    background: linear-gradient(135deg, #4f46e5, #7c3aed);
+}
+
+table{
+    border-color: rgb(114, 43, 43);
+    background-color: rgb(235, 173, 173);
+    width: 30%;        
+}
+
+td, th {
+    padding: 10px 200px;   
+    text-align: center;
+}
+
+#cabeza-tabla{
+    border-color: rgb(114, 43, 43);
+    background-color: rgb(235, 173, 173);
+}
+
+nav ul{
+    display: flex;
+    list-style: none; 
+    justify-content: center; 
+    gap: 20px;
+}
+
+ul a{
+    text-decoration: none;
+    color:aliceblue;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 20px;
+    padding: 20px;
+}
+
+ul a:hover{
+    color: rgb(75, 24, 97);
+    font-size: 25px;
+}
+
+#sobre-mi{
+    display: flex;
+}
+
+#proyectos img{
+    border-radius: 50%;
+}
+
+
+#proyectos a {
+    text-decoration: none;
+    color:rgb(51, 93, 130)
+}
+
+#proyectos a:hover{
+    color: rgb(75, 24, 97);
+    font-size: 22px;
+}
+
+table{
+    margin: auto;
+    border-collapse: collapse;
+}
+
+table td, th, tr{
+    border: 3px solid black;
+}
+td{
+    padding: 0 20px;
+    background-color: aliceblue;
+}
+
+button{
+    padding: 20px;
+    font-family: Arial, Helvetica, sans-serif;
+    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    border-radius: 16px;
+    border: none;
+}
+
+button:active{
+    transform: scale(0.75);
+}
+
+#boton-proyectos{
+    color: black;
+}
+
+#Conocimientos{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#Conocimientos div{
+    display: flex;
+    gap: 2rem;
+}
+.columnas{
+    width: 50%;
+    padding: 20px;
+    gap: 20px;
+}
+
+.columnas:first-child{
+    border-right: 2px solid black;
+}
+
+#title-conocimientos{
+    color: white;
+    text-align: center;
+}
+
+#title-habilidades{
+    color: rgb(239, 115, 115);
+}
+
+
+
+.columnas {
+  background: #1f1d21;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 1.5rem 1.25rem;
+}
+
+.columnas h3 {
+  font-size: 15px;
+  font-weight: 600;
+  margin-bottom: 12px;
+  color: white;
+}
+
+.columnas p {
+  background: #292432;
+  color: #0C447C;
+  font-size: 12px;
+  padding: 3px 10px;
+  border-radius: 99px;
+  margin: 3px;
+}
+
+#Backend {
+  background: #1a1535;
+  border: 1px solid #534AB7;
+}
+
+#Frontend {
+  background: #2a1020;
+  border: 1px solid #993556;
+}
+
+input{
+    padding: 1%;
+    font-family: Arial, Helvetica, sans-serif;
+    background: white;
+    border-radius: 16px;
+    border: none;
+}
+
+#button-enviar{
+    padding: 20px;
+    font-family: Arial, Helvetica, sans-serif;
+    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    border-radius: 16px;
+    border: none; 
+}
+
+#button-enviar:hover{
+    background: linear-gradient(135deg, #4f46e5, #7c3aed);
+}
+
+#button-enviar:active{
+    transform: scale(0.75);
+}
