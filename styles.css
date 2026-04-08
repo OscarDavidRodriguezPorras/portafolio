@@ -366,5 +366,21 @@ img:hover{ transform: scale(1.05); }
 
 /*Footer*/
 footer{
-    
+    background: radial-gradient(circle at bottom, #1e3a8a, #0a0f1f);
+    color: white;
+}
+
+footer p{
+    color: white;
+}
+
+footer a{
+    text-decoration: none;
+    color: white;
+    transition: 0.3s;
+}
+
+footer a:hover{
+  color: #6c63ff;
+  text-shadow: 0 0 10px #6c63ff;
 }
