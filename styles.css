@@ -28,9 +28,14 @@ body{
 #sobre-mi p{ color: white; }
 
 #presentacion{
-    margin: 50px 20px;
+    width: 90%;
+    margin: 80px 20px;
     color: rgb(238, 129, 129);
     text-align: left;
+}
+
+#presentacion p {
+    white-space: nowrap;
 }
 
 #imagen-yo{ margin: 45px 950px; }
@@ -383,4 +388,9 @@ footer a{
 footer a:hover{
   color: #6c63ff;
   text-shadow: 0 0 10px #6c63ff;
+}
+
+#nada-que-ver{
+    color: white;
+    text-align: center;
 }
