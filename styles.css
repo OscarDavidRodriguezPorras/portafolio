@@ -1,8 +1,10 @@
 header{
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 30px;
     text-align: center;
     color: rgb(239, 115, 115);
 }
-
 h2{
     font-family: sans-serif;
     font-size: 50px;
@@ -44,7 +46,7 @@ h2{
 }
 
 #titulo-p{
-    text-align: center;
+    text-align: left;
     color: rgb(239, 115, 115);
 }
 
@@ -58,6 +60,14 @@ h2{
     justify-content: right;
 }
 
+#imagen-inv{
+    margin: 5px 20px;
+    justify-content: left;
+}
+
+header img{
+    border-radius: 50%;
+}
 #sobre-mi img{
     border-radius: 50%;
 }
@@ -91,7 +101,6 @@ h2{
     margin-bottom: 20px;
     padding: 25px;
     box-shadow: 0px 2px 15px;
-    text-align: center;
     background-color:#111827;
     border-radius: 16px;
     border-color: 1px solid rgba(255, 255, 255, 0.1); 
@@ -125,7 +134,6 @@ h2{
     padding: 25px;
     box-shadow: 0px 2px 15px; /* sirve para poner un efecto de sombra*/
     border-color: black;
-    text-align: center;
     background:none;
 }
 
@@ -182,8 +190,7 @@ ul a{
 }
 
 ul a:hover{
-    color: rgb(75, 24, 97);
-    font-size: 25px;
+    font-size: 15px;
 }
 
 #sobre-mi{
@@ -237,7 +244,7 @@ button:active{
 #Conocimientos{
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: left;
 }
 
 #Conocimientos div{
@@ -254,15 +261,9 @@ button:active{
     border-right: 2px solid black;
 }
 
-#title-conocimientos{
-    color: white;
-    text-align: center;
-}
-
 #title-habilidades{
     color: rgb(239, 115, 115);
 }
-
 
 
 .columnas {
@@ -306,6 +307,10 @@ input{
     border: none;
 }
 
+label{
+    color: white;
+}
+
 #button-enviar{
     padding: 20px;
     font-family: Arial, Helvetica, sans-serif;
@@ -320,4 +325,62 @@ input{
 
 #button-enviar:active{
     transform: scale(0.75);
+}
+
+img:hover{
+    transform: scale(1.05);
+}
+
+nav a {
+  border: 0.5px solid rgba(255, 255, 255, 0.18);
+  border-radius: 8px;
+  padding: 8px 40px;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+nav li{
+    padding: 8px 20px;
+    margin: 20px 1px;
+}
+
+nav a:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.38);
+  color: #fff;
+}
+
+nav a:active {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.5);
+  color: #fff;
+}
+
+#title-collage{
+    text-align: center;
+}
+
+#collage{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    padding: 10px;
+    margin: 0 30%;
+}
+
+#collage img{
+    margin: 20px;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+#img5{
+    grid-column: span 2;
+    grid-row: span 2;
+    margin: auto;
+    width: auto;
+}
+
+header {
+  background: linear-gradient(135deg, #0a0f1f, #0f2a4d, #1b3a6b);
 }
