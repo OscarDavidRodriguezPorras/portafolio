@@ -50,5 +50,4 @@ Fue mi primer proyecto web completo.
 
 ## 📝 Nota
 
-Soy estudiante asi que el codigo no es perfecto 😅
-pero aprendo cada dia mas y este portafolio lo ire actualizando con el tiempo 💪
+Lnk del figma: https://www.figma.com/design/z7UvzudYu0G2F0i6s9Bo5I/Sin-t%C3%ADtulo?node-id=36-104&t=1dS9NGm3Zr3hPgSK-1
