@@ -3,193 +3,476 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Primer proyecto</title>
+    <title>Oscar David - Full Stack Developer</title>
     <link rel="stylesheet" href="styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Poppins:wght@300;400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <header>
-        <!--comentarios-->
-        <div id="imagen-inv"><img src="/img/logan.png" alt="" height="100px">
-        </div>
-        <nav id="navegacion">
-            <ul>
-                <li><a href="#sobre-mi">Sobre mi</a></li>
-                <li><a href="#title-proyectos">Proyectos</a></li>
-                <li><a href="#footer">Contacto</a></li>
-            </ul>
-        </nav>
-    </header>
-    <hr>
-    <main>
-        <section id="sobre-mi">
-            <div id="presentacion">
-                <h2>>WHOAMI</h2>
-                <p>Oscar David Rodriguez Porras</p>
-                <hr>
-                <p>Estudiante en desarrollo de software</p>
+    <!-- Login Overlay -->
+    <div id="login-overlay">
+        <div class="login-container">
+            <div class="login-box">
+                <h1>Bienvenido al portafolio de<br><span class="gradient-text">Oscar Rodriguez</span></h1>
+                <p>Por favor, elige quién eres:</p>
+                <div class="login-options">
+                    <button id="admin-login-btn" class="btn btn-primary">Oscar Rodriguez</button>
+                    <button id="guest-login-btn" class="btn btn-primary">Invitado</button>
+                </div>
+                <form id="password-form">
+                    <input type="password" id="password-input" placeholder="Ingresa la contraseña">
+                    <button type="submit" class="btn btn-primary">Entrar</button>
+                </form>
+                <p class="login-explanation">
+                    Implementé este sistema para gestionar mi portafolio de forma dinámica. El modo administrador me permite añadir y editar proyectos en tiempo real, sin necesidad de modificar el código fuente.
+                </p>
             </div>
-            <div id="imagen-yo">
-                <img src="/img/perfil.png"
-                    alt="Imagen sobre mi" height="300px"> 
+        </div>
+    </div>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="navbar-container">
+            <div class="navbar-logo">
+                <img src="/img/logan.png" alt="Oscar Logo" class="logo-img">
+                <span class="logo-text">&lt;oscar.dev/&gt;</span>
+            </div>
+            <div id="navbar-menu" class="navbar-menu">
+                <a href="#home" class="nav-link">Home</a>
+                <a href="#about" class="nav-link">About</a>
+                <a href="#skills" class="nav-link">Skills</a>
+                <a href="#projects" class="nav-link">Projects</a>
+                <button id="mode-switch-btn" class="nav-link nav-link-btn"></button>
+                <a href="#contact" class="nav-link nav-link-btn">Contacto</a>
+            </div>
+            <button id="hamburger-btn" class="hamburger-btn">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Progress Bar -->
+    <div class="scroll-progress"></div>
+
+    <main style="display: none;">
+        <!-- Hero Section -->
+        <section id="home" class="hero">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <span class="hero-greeting">Bienvenido,</span>
+                    <h1 class="hero-title">Oscar David<br><span class="gradient-text">Rodriguez Porras</span></h1>
+                    <p class="hero-subtitle">Backend Developer | Bases de Datos | Python</p>
+                    <p class="hero-description">Desarrollador apasionado por crear soluciones digitales innovadoras y código limpio. Especializado en web development con experiencia en Python, HTML, CSS y JavaScript.</p>
+                    <div class="hero-buttons">
+                        <a href="#projects" class="btn btn-primary">Ver Mis Proyectos</a>
+                        <a href="#contact" class="btn btn-secondary">Contáctame</a>
+                    </div>
+                </div>
+                <div class="hero-image">
+                    <div class="image-wrapper">
+                        <img src="/img/perfil.png" alt="Oscar David" class="profile-img">
+                    </div>
+                </div>
+            </div>
+            <div class="floating-elements">
+                <div class="float-item item-1"></div>
+                <div class="float-item item-2"></div>
+                <div class="float-item item-3"></div>
             </div>
         </section>
 
-        <section id="Trayectoria">
-            <div>
-                <h2>>ABOUTME</h2>
-                <p>Estudiante en formacion en desarrollo de software con habilidades basicas en pyhon, html y css</p>
+        <!-- About Section -->
+        <section id="about" class="about">
+            <div class="section-header">
+                <h2>Sobre Mí</h2>
+                <div class="header-line"></div>
+            </div>
+            <div class="about-grid">
+                <div class="about-card">
+                    <div class="card-icon">💻</div>
+                    <h3>Desarrollo</h3>
+                    <p>Estudiante en formación en desarrollo de software con enfoque en crear aplicaciones modernas y eficientes.</p>
+                </div>
+                <div class="about-card">
+                    <div class="card-icon">🎯</div>
+                    <h3>Filosofía</h3>
+                    <p>Código limpio, diseño intuitivo y soluciones escalables. Cada proyecto es una oportunidad de aprendizaje.</p>
+                </div>
+                <div class="about-card">
+                    <div class="card-icon">🚀</div>
+                    <h3>Objetivo</h3>
+                    <p>Convertirme en un experto en desarrollo Backend y bases de datos, construyendo la base de aplicaciones robustas e innovadoras.</p>
+                </div>
+            </div>
+
+            <!-- Statistics -->
+            <div class="stats-container">
+                <div class="stat-item">
+                    <div id="projects-counter" class="stat-number" data-target="3">0</div>
+                    <div class="stat-label">Proyectos Completados</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" data-target="4">0</div>
+                    <div class="stat-label">Lenguajes Dominados</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" data-target="100">0</div>
+                    <div class="stat-label">% Dedicación</div>
+                </div>
+                <div class="stat-item">
+                    <div id="training-months-counter" class="stat-number" data-target="6">0</div>
+                    <div class="stat-label">Meses de Formación</div>
+                </div>
             </div>
         </section>
 
-    <section id="Conocimientos">
-        <div id="title-conocimientos"><h2>>SKILLS</h2></div>
-        <div id="skills-grid">
-            <div class="skill-item">
-                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg" alt="Python">
-                <span>Python</span>
+        <!-- Skills Section -->
+        <section id="skills" class="skills">
+            <div class="section-header">
+                <h2>Tecnologías & Skills</h2>
+                <div class="header-line"></div>
             </div>
-            <div class="skill-item">
-                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" alt="GitHub">
-                <span>GitHub</span>
+
+            <div class="admin-controls" style="display: none; text-align: center; margin-bottom: 40px;">
+                <button id="add-skill-category-btn" class="btn btn-primary">Añadir Categoría de Skill</button>
             </div>
-            <div class="skill-item">
-                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg" alt="HTML">
-                <span>HTML</span>
+
+            <div id="skills-grid" class="skills-grid">
+                <!-- Las skills se renderizarán aquí dinámicamente -->
             </div>
-            <div class="skill-item">
-                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg" alt="CSS">
-                <span>CSS</span>
+
+            <!-- Proficiency Bars -->
+            <div class="proficiency-section">
+                <h3>Nivel de Dominio</h3>
+                <div class="proficiency-bars">
+                    <div class="proficiency-item">
+                        <div class="proficiency-header">
+                            <span>HTML & CSS</span>
+                            <span class="percentage">85%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 85%"></div>
+                        </div>
+                    </div>
+                    <div class="proficiency-item">
+                        <div class="proficiency-header">
+                            <span>JavaScript</span>
+                            <span class="percentage">70%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 70%"></div>
+                        </div>
+                    </div>
+                    <div class="proficiency-item">
+                        <div class="proficiency-header">
+                            <span>Python</span>
+                            <span class="percentage">80%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 80%"></div>
+                        </div>
+                    </div>
+                    <div class="proficiency-item">
+                        <div class="proficiency-header">
+                            <span>Git & GitHub</span>
+                            <span class="percentage">75%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 75%"></div>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
-    </section>
-    <section>
-        <div id="title-proyectos"> <h2>>PROJECTS</h2></div>
-            <div id="lista-proyectos">
-                <div class="proyecto-fila">
-                    <div class="proyecto-fila-info">
+        </section>
+
+        <!-- Projects Section -->
+        <section id="projects" class="projects">
+            <div class="section-header">
+                <h2>Proyectos Destacados</h2>
+                <div class="header-line"></div>
+            </div>
+            <div class="admin-controls" style="display: none; text-align: center; margin-bottom: 40px;">
+                <button id="add-project-btn" class="btn btn-primary">Añadir Nuevo Proyecto</button>
+            </div>
+
+            <div id="projects-grid" class="projects-grid">
+                <!-- Project 1 -->
+                <div class="project-card">
+                    <div class="project-admin-buttons" style="display: none;"><button class="edit-project">Editar</button><button class="delete-project">Eliminar</button></div>
+                    <div class="project-image">
+                        <img src="https://c4.wallpaperflare.com/wallpaper/935/641/266/lindo-cachorro-wallpaper-preview.jpg" alt="Patitas Felices">
+                        <div class="project-overlay">
+                            <a href="#detalle-p1" class="project-link">Ver Proyecto</a>
+                        </div>
+                    </div>
+                    <div class="project-content">
+                        <span class="project-tag">Web Development</span>
                         <h3>Patitas Felices</h3>
-                        <p>Sistema de adopcion de animales domesticos</p>
-                        <a href="#detalle-p1" class="ver-proyecto">> Ver proyecto</a>
+                        <p>Sistema de adopción de animales domésticos con interfaz intuitiva y diseño responsivo.</p>
+                        <div class="project-tech">
+                            <span class="tech-badge">HTML5</span>
+                            <span class="tech-badge">CSS3</span>
+                            <span class="tech-badge">GitHub</span>
+                        </div>
                     </div>
-                    <img src="https://c4.wallpaperflare.com/wallpaper/935/641/266/lindo-cachorro-wallpaper-preview.jpg" alt="Pizzería">
                 </div>
-                <div class="proyecto-fila">
-                    <div class="proyecto-fila-info">
+
+                <!-- Project 2 -->
+                <div class="project-card">
+                    <div class="project-admin-buttons" style="display: none;"><button class="edit-project">Editar</button><button class="delete-project">Eliminar</button></div>
+                    <div class="project-image">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ_Z4gMn46RxyHzsODg8ptSrgAi61lSAt5G2w&s" alt="Gestionar Herramientas">
+                        <div class="project-overlay">
+                            <a href="#detalle-p2" class="project-link">Ver Proyecto</a>
+                        </div>
+                    </div>
+                    <div class="project-content">
+                        <span class="project-tag">Python</span>
                         <h3>Gestionar Herramientas</h3>
-                        <p>Proyecto de gestión desarrollado en Python</p>
-                        <a href="#detalle-p2" class="ver-proyecto">> Ver proyecto</a>
+                        <p>Aplicación de gestión desarrollada en Python con estructuras de datos avanzadas.</p>
+                        <div class="project-tech">
+                            <span class="tech-badge">Python</span>
+                            <span class="tech-badge">JSON</span>
+                            <span class="tech-badge">GitHub</span>
+                        </div>
                     </div>
-                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ_Z4gMn46RxyHzsODg8ptSrgAi61lSAt5G2w&s" alt="Python">
                 </div>
-                <div class="proyecto-fila">
-                    <div class="proyecto-fila-info">
-                        <h3>Flores amarillas</h3>
-                        <p>Proyecto web desarrollado en HTML y CSS</p>
-                        <a href="#detalle-p3" class="ver-proyecto">> Ver proyecto</a>
-                    </div>
-                    <img src="https://cdn.pixabay.com/animation/2024/04/05/15/11/15-11-02-599__340.png" alt="HTML">
-                </div>
-            </div>
-            </section>
 
-            <section>
-            <!-- DETALLE P1 -->
-            <div id="detalle-p1" class="detalle-proyecto">
-                <div class="detalle-header">
-                    <h2>>Patitas Felices</h2>
-                    <a href="#proyectos" class="btn-volver">← Volver</a>
-                </div>
-                <div class="detalle-contenido">
-                    <div class="detalle-texto">
-                        <p><strong>Nombre:</strong> Patitas Felices</p>
-                        <p><strong>Descripcion:</strong> Sistema de adopción de anmales domesticos fue desarrollada junto a un compañero de estudio</p>
-                        <p><strong>>tech_stacks:</strong></p>
-                        <p>-HTML</p>
-                        <p>-CSS</p>
-                        <p>-Git/Github</p>
-                        <p><strong>>problem:</strong></p>
-                        <p>Falta de una opción mas rentable para adopción o ayudas hacia una organizacion de rescate animal</p>
-                        <p><strong>>solution:</strong></p>
-                        <p>Pagina web llamativa con diferentes opciones de ayudas o beneficios que ofrece la organización</p>
-                        <p><strong>>features:</strong></p>
-                        <p>HTML5, CSS3, Diseño responsivo, Flexbox, Grid, Navegación intuitiva, Galería de imágenes, Perfiles dinámicos (estáticos), Clasificación de contenido</p>
-                        <p><strong>>link:</strong></p>
-                        <a href="https://github.com/OscarDavidRodriguezPorras/Patitas-felices" target="_blank">
-                            <img src="https://upload.wikimedia.org/wikipedia/commons/c/c2/GitHub_Invertocat_Logo.svg" alt="link" class="detalle-link-img">
-                        </a>
+                <!-- Project 3 -->
+                <div class="project-card">
+                    <div class="project-admin-buttons" style="display: none;"><button class="edit-project">Editar</button><button class="delete-project">Eliminar</button></div>
+                    <div class="project-image">
+                        <img src="https://cdn.pixabay.com/animation/2024/04/05/15/11/15-11-02-599__340.png" alt="Flores Amarillas">
+                        <div class="project-overlay">
+                            <a href="#detalle-p3" class="project-link">Ver Proyecto</a>
+                        </div>
                     </div>
-                    <img src="https://c4.wallpaperflare.com/wallpaper/162/949/183/animales-baby-cachorros-gato-wallpaper-preview.jpg" alt="Pizzería" class="detalle-img-grande">
+                    <div class="project-content">
+                        <span class="project-tag">Web Design</span>
+                        <h3>Flores Amarillas</h3>
+                        <p>Sitio web creativo con CSS avanzado e interactividad JavaScript.</p>
+                        <div class="project-tech">
+                            <span class="tech-badge">HTML5</span>
+                            <span class="tech-badge">CSS3</span>
+                            <span class="tech-badge">JavaScript</span>
+                        </div>
+                    </div>
                 </div>
             </div>
- 
-            <!-- DETALLE P2 -->
-            <div id="detalle-p2" class="detalle-proyecto">
-                <div class="detalle-header">
-                    <h2>>Gestion_de_Herramientas</h2>
-                    <a href="#proyectos" class="btn-volver">← Volver</a>
-                </div>
-                <div class="detalle-contenido">
-                    <div class="detalle-texto">
-                        <p><strong>Nombre:</strong> Gestionar Herramientas</p>
-                        <p><strong>Descripcion:</strong> Proyecto de gestión desarrollado en Python</p>
-                        <p><strong>>tech_stacks:</strong></p>
-                        <p>-Python</p>
-                        <p>-Git/Github</p>
-                        <p><strong>>problem:</strong></p>
-                        <p>Necesidad de practicar estructuras de datos en Python</p>
-                        <p><strong>>solution:</strong></p>
-                        <p>Aplicación con listas JSON, bucles, condicionales y funciones</p>
-                        <p><strong>>features:</strong></p>
-                        <p>Listas Json, Bucles, Condicionales, Funciones</p>
-                        <p><strong>>link:</strong></p>
-                        <a href="https://github.com/OscarDavidRodriguezPorras/Proyecto_python1" target="_blank">
-                            <img src="https://upload.wikimedia.org/wikipedia/commons/c/c2/GitHub_Invertocat_Logo.svg" alt="link" class="detalle-link-img">
-                        </a>
+
+            <!-- Project Details (Hidden by default) -->
+            <div id="detalle-p1" class="project-detail">
+                <div class="detail-content">
+                    <a href="#projects" class="detail-close">&times;</a>
+                    <div class="detail-grid">
+                        <div class="detail-image">
+                            <img src="https://c4.wallpaperflare.com/wallpaper/162/949/183/animales-baby-cachorros-gato-wallpaper-preview.jpg" alt="Patitas Felices">
+                        </div>
+                        <div class="detail-text">
+                            <h2>Patitas Felices</h2>
+                            <p class="detail-description">Sistema de adopción de animales domésticos desarrollado en equipo como proyecto académico.</p>
+                            
+                            <h4>Problema Identificado</h4>
+                            <p>Falta de una plataforma accesible para adopción y apoyo a organizaciones de rescate animal.</p>
+                            
+                            <h4>Solución Implementada</h4>
+                            <p>Página web moderna y atractiva con múltiples opciones de ayuda y beneficios para la organización.</p>
+                            
+                            <h4>Tecnologías Utilizadas</h4>
+                            <div class="detail-tech">
+                                <span>HTML5</span>
+                                <span>CSS3</span>
+                                <span>Flexbox</span>
+                                <span>Grid</span>
+                                <span>GitHub</span>
+                            </div>
+                            
+                            <h4>Características</h4>
+                            <ul class="features-list">
+                                <li>Diseño responsivo y moderno</li>
+                                <li>Navegación intuitiva</li>
+                                <li>Galería de imágenes animada</li>
+                                <li>Perfiles dinámicos de animales</li>
+                                <li>Sistema de clasificación de contenido</li>
+                            </ul>
+                            
+                            <a href="https://github.com/OscarDavidRodriguezPorras/Patitas-felices" target="_blank" class="detail-link">
+                                <span>→ Ver Repositorio en GitHub</span>
+                            </a>
+                        </div>
                     </div>
-                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg" alt="Python" class="detalle-img-grande">
                 </div>
             </div>
- 
-            <!-- DETALLE P3 -->
-            <div id="detalle-p3" class="detalle-proyecto">
-                <div class="detalle-header">
-                    <h2>>Flores_Amarillas</h2>
-                    <a href="#proyectos" class="btn-volver">← Volver</a>
-                </div>
-                <div class="detalle-contenido">
-                    <div class="detalle-texto">
-                        <p><strong>Nombre:</strong> Flores amarillas</p>
-                        <p><strong>Descripcion:</strong> Proyecto web en HTML y CSS</p>
-                        <p><strong>>tech_stacks:</strong></p>
-                        <p>-HTML</p>
-                        <p>-CSS</p>
-                        <p>-JavaScript</p>
-                        <p><strong>>problem:</strong></p>
-                        <p>Aplicar conceptos básicos de maquetación web</p>
-                        <p><strong>>solution:</strong></p>
-                        <p>Página web con estilos personalizados y estructura semántica</p>
-                        <p><strong>>features:</strong></p>
-                        <p>HTML, CSS, Javascript</p>
-                        <p><strong>>link:</strong></p>
-                        <a href="https://github.com/OscarDavidRodriguezPorras/flores-amarillas" target="_blank">
-                            <img src="https://upload.wikimedia.org/wikipedia/commons/c/c2/GitHub_Invertocat_Logo.svg" alt="link" class="detalle-link-img">
-                        </a>
+
+            <div id="detalle-p2" class="project-detail">
+                <div class="detail-content">
+                    <a href="#projects" class="detail-close">&times;</a>
+                    <div class="detail-grid">
+                        <div class="detail-image">
+                            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg" alt="Gestionar Herramientas">
+                        </div>
+                        <div class="detail-text">
+                            <h2>Gestionar Herramientas</h2>
+                            <p class="detail-description">Aplicación de gestión de herramientas desarrollada en Python para practicar estructuras de datos.</p>
+                            
+                            <h4>Problema Identificado</h4>
+                            <p>Necesidad de practicar y dominar estructuras de datos avanzadas en Python.</p>
+                            
+                            <h4>Solución Implementada</h4>
+                            <p>Aplicación funcional con listas JSON, bucles, condicionales y funciones reutilizables.</p>
+                            
+                            <h4>Tecnologías Utilizadas</h4>
+                            <div class="detail-tech">
+                                <span>Python</span>
+                                <span>JSON</span>
+                                <span>Estructuras de Datos</span>
+                                <span>GitHub</span>
+                            </div>
+                            
+                            <h4>Características</h4>
+                            <ul class="features-list">
+                                <li>Manejo de listas y diccionarios JSON</li>
+                                <li>Bucles y condicionales avanzados</li>
+                                <li>Funciones modularizadas</li>
+                                <li>Sistema de persistencia de datos</li>
+                                <li>Interfaz de línea de comandos</li>
+                            </ul>
+                            
+                            <a href="https://github.com/OscarDavidRodriguezPorras/Proyecto_python1" target="_blank" class="detail-link">
+                                <span>→ Ver Repositorio en GitHub</span>
+                            </a>
+                        </div>
                     </div>
-                    <img src="https://cdn.pixabay.com/animation/2024/04/05/15/11/15-11-02-599__340.png" alt="HTML" class="detalle-img-grande">
+                </div>
+            </div>
+
+            <div id="detalle-p3" class="project-detail">
+                <div class="detail-content">
+                    <a href="#projects" class="detail-close">&times;</a>
+                    <div class="detail-grid">
+                        <div class="detail-image">
+                            <img src="https://cdn.pixabay.com/animation/2024/04/05/15/11/15-11-02-599__340.png" alt="Flores Amarillas">
+                        </div>
+                        <div class="detail-text">
+                            <h2>Flores Amarillas</h2>
+                            <p class="detail-description">Proyecto web creativo que demuestra dominio de HTML, CSS y JavaScript para efectos interactivos.</p>
+                            
+                            <h4>Problema Identificado</h4>
+                            <p>Aplicar conceptos fundamentales de maquetación web y diseño responsivo.</p>
+                            
+                            <h4>Solución Implementada</h4>
+                            <p>Página web estilizada con estructura semántica y efectos interactivos de JavaScript.</p>
+                            
+                            <h4>Tecnologías Utilizadas</h4>
+                            <div class="detail-tech">
+                                <span>HTML5</span>
+                                <span>CSS3</span>
+                                <span>JavaScript</span>
+                                <span>Animaciones</span>
+                            </div>
+                            
+                            <h4>Características</h4>
+                            <ul class="features-list">
+                                <li>Maquetación semántica</li>
+                                <li>Estilos personalizados y gradientes</li>
+                                <li>Interactividad con JavaScript</li>
+                                <li>Animaciones CSS avanzadas</li>
+                                <li>Diseño totalmente responsivo</li>
+                            </ul>
+                            
+                            <a href="https://github.com/OscarDavidRodriguezPorras/flores-amarillas" target="_blank" class="detail-link">
+                                <span>→ Ver Repositorio en GitHub</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project Modal for Add/Edit -->
+            <div id="project-modal" class="project-detail">
+                <div class="detail-content">
+                    <a href="#" id="modal-close" class="detail-close">&times;</a>
+                    <form id="project-form">
+                        <h2 id="modal-title">Añadir Proyecto</h2>
+                        <input type="hidden" id="project-id">
+                        <div class="form-group"><input type="text" id="project-title" placeholder="Título del Proyecto" required></div>
+                        <div class="form-group"><input type="text" id="project-tag" placeholder="Categoría (e.g., Web Development)" required></div>
+                        <div class="form-group"><textarea id="project-description" placeholder="Descripción corta" required></textarea></div>
+                        <div class="form-group"><input type="text" id="project-image-url" placeholder="URL de la Imagen" required></div>
+                        <div class="form-group"><input type="text" id="project-tech" placeholder="Tecnologías (separadas por coma)" required></div>
+                        <div class="form-group"><input type="text" id="project-detail-link" placeholder="Link al Repositorio" required></div>
+                        <div class="form-group"><textarea id="project-detail-description" placeholder="Descripción detallada del modal" required></textarea></div>
+                        
+                        <button type="submit" class="btn btn-primary">Guardar Proyecto</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Skill Category Modal -->
+            <div id="skill-category-modal" class="project-detail">
+                <div class="detail-content">
+                    <a href="#" class="detail-close">&times;</a>
+                    <form id="skill-category-form">
+                        <h2 id="skill-category-modal-title">Añadir Categoría</h2>
+                        <input type="hidden" id="skill-category-id">
+                        <div class="form-group"><input type="text" id="skill-category-name" placeholder="Nombre de la Categoría" required></div>
+                        <button type="submit" class="btn btn-primary">Guardar Categoría</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Skill Item Modal -->
+            <div id="skill-item-modal" class="project-detail">
+                <div class="detail-content">
+                    <a href="#" class="detail-close">&times;</a>
+                    <form id="skill-item-form">
+                        <h2 id="skill-item-modal-title">Añadir Skill</h2>
+                        <input type="hidden" id="skill-item-id"><input type="hidden" id="skill-item-category-id">
+                        <div class="form-group"><input type="text" id="skill-item-name" placeholder="Nombre de la Skill (e.g., HTML5)" required></div>
+                        <div class="form-group"><input type="text" id="skill-item-image-url" placeholder="URL del Icono/Imagen" required></div>
+                        <button type="submit" class="btn btn-primary">Guardar Skill</button>
+                    </form>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="contact">
+            <div class="section-header">
+                <h2>Ponte en Contacto</h2>
+                <div class="header-line"></div>
+            </div>
+
+            <div class="contact-content">
+                <div class="contact-info">
+                    <div class="info-card">
+                        <span class="info-icon">📧</span>
+                        <h3>Email</h3>
+                        <a href="mailto:oscardavidrp2009@gmail.com">oscardavidrp2009@gmail.com</a>
+                    </div>
+                    <div class="info-card">
+                        <span class="info-icon">💼</span>
+                        <h3>GitHub</h3>
+                        <a href="https://github.com/OscarDavidRodriguezPorras" target="_blank">github.com/OscarDavidRodriguezPorras</a>
+                    </div>
+                    <div class="info-card">
+                        <span class="info-icon">🔗</span>
+                        <h3>LinkedIn</h3>
+                        <p>En desarrollo</p>
+                    </div>
                 </div>
             </div>
         </section>
+    </main>
 
-        <section>
-            <footer id="footer">
-            <h2>>CONTACT</h2>
-            <P>GMAIL: oscardavidrp2009@gmail.com</P>
-            <p>GITHUB: <a href="https://github.com/OscarDavidRodriguezPorras">https://github.com/OscarDavidRodriguezPorras</a></p>
-            <p>LINKEDLN: En desarrollo</p>
-            </footer>
-        </section>
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <p>&copy; 2024 Oscar David Rodriguez Porras. Todos los derechos reservados.</p>
+            <p>Diseñado y desarrollado con <span class="heart">❤️</span> por Oscar David</p>
+        </div>
+    </footer>
 
-        <br>
-
+    <script src="script.js"></script>
+</body>
+</html>
         
