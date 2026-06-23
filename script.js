@@ -589,11 +589,11 @@ function loadProjects() {
                 id: `p${index + 1}`,
                 title: card.querySelector('h3').textContent,
                 tag: card.querySelector('.project-tag').textContent,
-                description: card.querySelector('p').textContent,
-                imageUrl: card.querySelector('.project-image img').src,
+                description: card.querySelector('p').textContent.trim(),
+                imageUrl: card.querySelector('.project-image img').src.includes('https://') ? card.querySelector('.project-image img').src : card.querySelector('.project-image img').src.split('/').slice(-2).join('/'),
                 tech: Array.from(card.querySelectorAll('.tech-badge')).map(b => b.textContent).join(', '),
                 detailLink: document.querySelector(`#detalle-p${index + 1} .detail-link`).href,
-                detailDescription: document.querySelector(`#detalle-p${index + 1} .detail-description`).textContent
+                detailDescription: document.querySelector(`#detalle-p${index + 1} .detail-description`).textContent.trim()
             };
         });
     }
