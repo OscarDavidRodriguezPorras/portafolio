@@ -1,3 +1,12 @@
+import { db } from "./firebase.js";
+import {
+  collection,
+  addDoc,
+  getDocs,
+  doc,
+  updateDoc,
+  deleteDoc
+} from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
 // ============================================
 // PORTAFOLIO PROFESIONAL - SCRIPT AVANZADO
 // ============================================
@@ -371,41 +380,16 @@ function setupLogin() {
 // ============================================
 
 let skillsData = [];
-
-function loadSkills() {
-    const storedSkills = localStorage.getItem('portfolioSkills');
-    if (storedSkills) {
-        skillsData = JSON.parse(storedSkills);
-    } else {
-        // Cargar skills iniciales si no hay nada en localStorage
-        skillsData = [
-            {
-                id: 'cat1', name: 'Frontend', skills: [
-                    { id: 'skill1', name: 'HTML5', imageUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg' },
-                    { id: 'skill2', name: 'CSS3', imageUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg' },
-                    { id: 'skill3', name: 'JavaScript', imageUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg' }
-                ]
-            },
-            {
-                id: 'cat2', name: 'Backend', skills: [
-                    { id: 'skill4', name: 'Python', imageUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg' },
-                    { id: 'skill5', name: 'JSON', imageUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/json/json-original.svg' }
-                ]
-            },
-            {
-                id: 'cat3', name: 'Tools & Platforms', skills: [
-                    { id: 'skill6', name: 'GitHub', imageUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg' },
-                    { id: 'skill7', name: 'Git', imageUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg' },
-                    { id: 'skill8', name: 'VS Code', imageUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vscode/vscode-original.svg' }
-                ]
-            }
-        ];
+async function loadSkills() {
+    try {
+        const querySnapshot = await getDocs(collection(db, "skillCategories"));
+        skillsData = [];
+        querySnapshot.forEach((doc) => {
+            skillsData.push({ id: doc.id, ...doc.data() });
+        });
+    } catch (error) {
+        console.error("Error cargando skills desde Firestore:", error);
     }
-    renderSkills();
-}
-
-function saveSkills() {
-    localStorage.setItem('portfolioSkills', JSON.stringify(skillsData));
     renderSkills();
 }
 
@@ -463,11 +447,11 @@ function setupSkillCrudListeners() {
         const category = skillsData.find(c => c.id === categoryId);
         openSkillCategoryModal(category);
     }));
-    document.querySelectorAll('.delete-skill-category').forEach(btn => btn.addEventListener('click', e => {
+    document.querySelectorAll('.delete-skill-category').forEach(btn => btn.addEventListener('click', async e => {
         if (confirm('¿Seguro que quieres eliminar esta categoría y todas sus skills?')) {
             const categoryId = e.target.closest('.skill-category').dataset.id;
-            skillsData = skillsData.filter(c => c.id !== categoryId);
-            saveSkills();
+            await deleteDoc(doc(db, "skillCategories", categoryId));
+            loadSkills();
         }
     }));
 
@@ -484,14 +468,20 @@ function setupSkillCrudListeners() {
         const skill = category.skills.find(s => s.id === skillId);
         openSkillItemModal(categoryId, skill);
     }));
-    document.querySelectorAll('.delete-skill-item').forEach(btn => btn.addEventListener('click', e => {
+    document.querySelectorAll('.delete-skill-item').forEach(btn => btn.addEventListener('click', async e => {
         if (confirm('¿Seguro que quieres eliminar esta skill?')) {
             const skillEl = e.target.closest('.skill-item');
             const skillId = skillEl.dataset.id;
             const categoryId = skillEl.dataset.categoryId;
             const category = skillsData.find(c => c.id === categoryId);
-            category.skills = category.skills.filter(s => s.id !== skillId);
-            saveSkills();
+            if (category) {
+                category.skills = category.skills.filter(s => s.id !== skillId);
+                const categoryDocRef = doc(db, "skillCategories", categoryId);
+                await updateDoc(categoryDocRef, {
+                    skills: category.skills
+                });
+                loadSkills();
+            }
         }
     }));
 }
@@ -533,41 +523,51 @@ function setupSkillModals() {
     // Category Modal
     const categoryModal = document.getElementById('skill-category-modal');
     categoryModal.querySelector('.detail-close').addEventListener('click', (e) => { e.preventDefault(); categoryModal.style.display = 'none'; });
-    document.getElementById('skill-category-form').addEventListener('submit', e => {
+    document.getElementById('skill-category-form').addEventListener('submit', async e => {
         e.preventDefault();
         const form = e.target;
         const categoryId = form['skill-category-id'].value;
         const categoryName = form['skill-category-name'].value;
-        if (categoryId) {
-            skillsData.find(c => c.id === categoryId).name = categoryName;
-        } else {
-            skillsData.push({ id: `cat${Date.now()}`, name: categoryName, skills: [] });
+        try {
+            if (categoryId) {
+                const categoryDocRef = doc(db, "skillCategories", categoryId);
+                await updateDoc(categoryDocRef, { name: categoryName });
+            } else {
+                await addDoc(collection(db, "skillCategories"), { name: categoryName, skills: [] });
+            }
+        } catch (error) {
+            console.error("Error guardando categoría:", error);
         }
-        saveSkills();
+        loadSkills();
         categoryModal.style.display = 'none';
     });
 
     // Skill Item Modal
     const itemModal = document.getElementById('skill-item-modal');
     itemModal.querySelector('.detail-close').addEventListener('click', (e) => { e.preventDefault(); itemModal.style.display = 'none'; });
-    document.getElementById('skill-item-form').addEventListener('submit', e => {
+    document.getElementById('skill-item-form').addEventListener('submit', async e => {
         e.preventDefault();
         const form = e.target;
         const categoryId = form['skill-item-category-id'].value;
         const skillId = form['skill-item-id'].value;
         const skillData = {
-            id: skillId || `skill${Date.now()}`,
+            id: skillId || `skill${Date.now()}`, // ID se mantiene para la lógica interna del array
             name: form['skill-item-name'].value,
             imageUrl: form['skill-item-image-url'].value
         };
         const category = skillsData.find(c => c.id === categoryId);
-        if (skillId) {
-            const index = category.skills.findIndex(s => s.id === skillId);
-            category.skills[index] = skillData;
-        } else {
-            category.skills.push(skillData);
+        if (category) {
+            const newSkills = [...category.skills];
+            if (skillId) { // Editar
+                const index = newSkills.findIndex(s => s.id === skillId);
+                if (index > -1) newSkills[index] = skillData;
+            } else { // Añadir
+                newSkills.push(skillData);
+            }
+            const categoryDocRef = doc(db, "skillCategories", categoryId);
+            await updateDoc(categoryDocRef, { skills: newSkills });
+            loadSkills();
         }
-        saveSkills();
         itemModal.style.display = 'none';
     });
 }
@@ -578,32 +578,18 @@ function setupSkillModals() {
 
 let projectsData = [];
 
-function loadProjects() {
-    const storedProjects = localStorage.getItem('portfolioProjects');
-    if (storedProjects) {
-        projectsData = JSON.parse(storedProjects);
-    } else {
-        // Cargar proyectos iniciales del HTML si no hay nada en localStorage
-        projectsData = Array.from(document.querySelectorAll('.project-card')).map((card, index) => {
-            return {
-                id: `p${index + 1}`,
-                title: card.querySelector('h3').textContent,
-                tag: card.querySelector('.project-tag').textContent,
-                description: card.querySelector('p').textContent,
-                imageUrl: card.querySelector('.project-image img').src,
-                tech: Array.from(card.querySelectorAll('.tech-badge')).map(b => b.textContent).join(', '),
-                detailLink: document.querySelector(`#detalle-p${index + 1} .detail-link`).href,
-                detailDescription: document.querySelector(`#detalle-p${index + 1} .detail-description`).textContent
-            };
+async function loadProjects() {
+    try {
+        const querySnapshot = await getDocs(collection(db, "proyectos"));
+        projectsData = [];
+        querySnapshot.forEach((doc) => {
+            projectsData.push({ id: doc.id, ...doc.data() });
         });
+        renderProjects();
+        updateProjectsCounter();
+    } catch (error) {
+        console.error("No se pudieron cargar los proyectos desde Firebase:", error);
     }
-    renderProjects();
-}
-
-function saveProjects() {
-    localStorage.setItem('portfolioProjects', JSON.stringify(projectsData));
-    renderProjects();
-    updateProjectsCounter();
 }
 
 function updateProjectsCounter() {
@@ -704,12 +690,17 @@ function setupProjectCrudListeners() {
     });
 
     document.querySelectorAll('.delete-project').forEach(btn => {
-        btn.addEventListener('click', (e) => {
+        btn.addEventListener('click', async (e) => {
             if (confirm('¿Estás seguro de que quieres eliminar este proyecto?')) {
                 const card = e.target.closest('.project-card');
                 const projectId = card.dataset.id;
-                projectsData = projectsData.filter(p => p.id !== projectId);
-                saveProjects();
+                try {
+                    await deleteDoc(doc(db, "proyectos", projectId));
+                    await loadProjects(); // Recargar para reflejar la eliminación
+                } catch (error) {
+                    console.error("Error al eliminar el proyecto:", error);
+                    alert("Hubo un error al eliminar el proyecto.");
+                }
             }
         });
     });
@@ -750,12 +741,11 @@ function setupProjectModal() {
         navbar.style.display = 'flex';
     });
 
-    document.getElementById('project-form').addEventListener('submit', (e) => {
+    document.getElementById('project-form').addEventListener('submit', async (e) => {
         e.preventDefault();
         const form = e.target;
         const projectId = form['project-id'].value;
-        const projectData = {
-            id: projectId || `p${Date.now()}`,
+        const projectData = { // No incluimos el ID aquí, Firestore lo maneja
             title: form['project-title'].value,
             tag: form['project-tag'].value,
             description: form['project-description'].value,
@@ -765,13 +755,19 @@ function setupProjectModal() {
             detailDescription: form['project-detail-description'].value,
         };
 
-        if (projectId) { // Editing
-            const index = projectsData.findIndex(p => p.id === projectId);
-            projectsData[index] = projectData;
-        } else { // Adding
-            projectsData.push(projectData);
+        try {
+            let response;
+            if (projectId) { // Editando
+                const projectDocRef = doc(db, "proyectos", projectId);
+                await updateDoc(projectDocRef, projectData);
+            } else { // Añadiendo
+                await addDoc(collection(db, "proyectos"), projectData);
+            }
+            await loadProjects(); // Recargar los proyectos para ver los cambios
+        } catch (error) {
+            console.error("Error al guardar el proyecto:", error);
+            alert("Hubo un error al guardar el proyecto.");
         }
-        saveProjects();
         modal.style.display = 'none';
         navbar.style.display = 'flex';
     });
@@ -831,6 +827,7 @@ document.addEventListener('DOMContentLoaded', () => {
     setupProjectCrudListeners();
     setupLoginPasswordForm();
     setupHamburgerMenu();
+    loadProjects(); // Cargar proyectos al inicio
     loadSkills();
     setupSkillModals();
 });
