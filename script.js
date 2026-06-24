@@ -639,11 +639,14 @@ function renderProjects() {
 }
 
 function renderProjectDetails() {
-    // Eliminar modales de detalle existentes para no duplicarlos
-    document.querySelectorAll('.project-detail[id^="detalle-"]').forEach(modal => modal.remove());
+    // Eliminar modales de detalle existentes para no duplicarlos, excepto el modal de edición
+    document.querySelectorAll('.project-detail[id^="detalle-"]:not(#project-modal)').forEach(modal => modal.remove());
 
     const main = document.querySelector('main');
     projectsData.forEach(project => {
+        // Evitar crear un modal para un proyecto sin ID (puede ocurrir en un estado intermedio)
+        if (!project.id) return;
+
         const detailModal = document.createElement('div');
         detailModal.id = `detalle-${project.id}`;
         detailModal.className = 'project-detail';
@@ -675,6 +678,7 @@ function renderProjectDetails() {
 
     // Re-configurar los listeners para los nuevos modales
     setupClickOutsideModalClosing();
+    setupProjectModalClosing(); // Asegurar que ESC también funcione en los nuevos modales
 }
 
 function setupProjectCrudListeners() {
