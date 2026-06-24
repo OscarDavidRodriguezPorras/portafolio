@@ -143,42 +143,7 @@
             <div class="proficiency-section">
                 <h3>Nivel de Dominio</h3>
                 <div class="proficiency-bars">
-                    <div class="proficiency-item">
-                        <div class="proficiency-header">
-                            <span>HTML & CSS</span>
-                            <span class="percentage">85%</span>
-                        </div>
-                        <div class="progress-bar">
-                            <div class="progress-fill" style="width: 85%"></div>
-                        </div>
-                    </div>
-                    <div class="proficiency-item">
-                        <div class="proficiency-header">
-                            <span>JavaScript</span>
-                            <span class="percentage">70%</span>
-                        </div>
-                        <div class="progress-bar">
-                            <div class="progress-fill" style="width: 70%"></div>
-                        </div>
-                    </div>
-                    <div class="proficiency-item">
-                        <div class="proficiency-header">
-                            <span>Python</span>
-                            <span class="percentage">80%</span>
-                        </div>
-                        <div class="progress-bar">
-                            <div class="progress-fill" style="width: 80%"></div>
-                        </div>
-                    </div>
-                    <div class="proficiency-item">
-                        <div class="proficiency-header">
-                            <span>Git & GitHub</span>
-                            <span class="percentage">75%</span>
-                        </div>
-                        <div class="progress-bar">
-                            <div class="progress-fill" style="width: 75%"></div>
-                        </div>
-                    </div>
+                    <!-- Las barras de dominio se renderizarán aquí dinámicamente -->
                 </div>
             </div>
         </section>
@@ -367,6 +332,14 @@
                         <input type="hidden" id="skill-item-id"><input type="hidden" id="skill-item-category-id">
                         <div class="form-group"><input type="text" id="skill-item-name" placeholder="Nombre de la Skill (e.g., HTML5)" required></div>
                         <div class="form-group"><input type="text" id="skill-item-image-url" placeholder="URL del Icono/Imagen" required></div>
+                        <div class="form-group form-group-checkbox">
+                            <input type="checkbox" id="skill-item-is-language">
+                            <label for="skill-item-is-language"><span class="toggle-switch"></span>Es un lenguaje de programación</label>
+                        </div>
+                        <div class="form-group">
+                            <label for="skill-item-proficiency">Nivel de Dominio: <span id="proficiency-value">0%</span></label>
+                            <input type="range" id="skill-item-proficiency" min="0" max="100" value="0">
+                        </div>
                         <button type="submit" class="btn btn-primary">Guardar Skill</button>
                     </form>
                 </div>

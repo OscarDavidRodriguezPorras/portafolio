@@ -147,6 +147,21 @@ body {
     }
 }
 
+@keyframes shake {
+    10%, 90% {
+        transform: translateX(-1px);
+    }
+    20%, 80% {
+        transform: translateX(2px);
+    }
+    30%, 50%, 70% {
+        transform: translateX(-4px);
+    }
+    40%, 60% {
+        transform: translateX(4px);
+    }
+}
+
 /* ============================================
    NAVBAR PROFESIONAL
    ============================================ */
@@ -1117,6 +1132,92 @@ section {
     margin-bottom: 20px;
 }
 
+.form-group-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    cursor: pointer;
+    user-select: none;
+    margin-top: 10px;
+}
+
+.form-group-checkbox label {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    cursor: pointer;
+    color: var(--text-muted);
+}
+
+.form-group-checkbox input {
+    display: none; /* Ocultamos el checkbox por defecto */
+}
+
+.toggle-switch {
+    position: relative;
+    width: 50px;
+    height: 28px;
+    background-color: rgba(100, 116, 139, 0.4);
+    border-radius: 34px;
+    transition: background-color 0.3s;
+}
+
+.toggle-switch::before {
+    content: "";
+    position: absolute;
+    height: 20px;
+    width: 20px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    border-radius: 50%;
+    transition: transform 0.3s;
+}
+
+.form-group-checkbox input:checked + label .toggle-switch {
+    background-color: var(--primary);
+}
+
+.form-group-checkbox input:checked + label .toggle-switch::before {
+    transform: translateX(22px);
+}
+
+/* Estilos para el slider de dominio en el modal */
+#skill-item-proficiency {
+    width: 100%;
+    -webkit-appearance: none;
+    appearance: none;
+    height: 8px;
+    background: rgba(100, 116, 139, 0.4);
+    border-radius: 5px;
+    outline: none;
+    opacity: 0.7;
+    transition: opacity .2s;
+    margin-top: 10px;
+}
+
+#skill-item-proficiency:hover {
+    opacity: 1;
+}
+
+#skill-item-proficiency::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    background: var(--primary);
+    cursor: pointer;
+    border-radius: 50%;
+}
+
+#skill-item-proficiency::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    background: var(--primary);
+    cursor: pointer;
+    border-radius: 50%;
+}
+
 .form-group input,
 .form-group textarea {
     width: 100%;
@@ -1344,6 +1445,10 @@ body:has(.project-detail:target) .scroll-progress {
     max-width: 500px;
     width: 90%;
     animation: zoomInDown 1.2s ease-out;
+}
+
+.login-box.shake {
+    animation: shake 0.6s cubic-bezier(.36,.07,.19,.97) both;
 }
 
 .login-box h1 {

@@ -39,7 +39,10 @@ const observer = new IntersectionObserver((entries) => {
 // Contador de Estadísticas
 function animateCounters() {
     const counters = document.querySelectorAll('.stat-number');
-    
+
+    // Excluir el contador de proyectos, ya que se maneja por separado
+    const filteredCounters = Array.from(counters).filter(c => c.id !== 'projects-counter');
+
     counters.forEach(counter => {
         const target = parseInt(counter.getAttribute('data-target'));
         let current = 0;
@@ -116,22 +119,8 @@ function highlightActiveNavLink() {
 
 // Animar barras de progreso
 function animateProgressBars() {
-    const bars = document.querySelectorAll('.progress-fill');
-    
-    const barsObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const width = entry.target.style.width;
-                entry.target.style.width = '0';
-                setTimeout(() => {
-                    entry.target.style.width = width;
-                }, 100);
-                barsObserver.unobserve(entry.target);
-            }
-        });
-    }, { threshold: 0.5 });
-    
-    bars.forEach(bar => barsObserver.observe(bar));
+    // Esta función ahora se activa después de renderizar las barras dinámicamente.
+    // El IntersectionObserver se crea dentro de renderProficiencyBars.
 }
 
 // Efecto hover en skill items
@@ -301,6 +290,7 @@ function setupLogin() {
     const modeSwitchBtn = document.getElementById('mode-switch-btn');
     const passwordForm = document.getElementById('password-form');
     const passwordInput = document.getElementById('password-input');
+    const loginBox = document.querySelector('.login-box');
 
     createLoginParticles();
 
@@ -328,7 +318,14 @@ function setupLogin() {
             sessionStorage.setItem('isAdmin', 'true');
             enterAdminMode();
         } else {
-            alert('Contraseña incorrecta.');
+            // Animación de error en lugar de alert
+            loginBox.classList.add('shake');
+            passwordInput.value = '';
+            passwordInput.placeholder = 'Contraseña incorrecta, intenta de nuevo';
+
+            setTimeout(() => {
+                loginBox.classList.remove('shake');
+            }, 600); // Duración de la animación
         }
     });
 
@@ -391,6 +388,22 @@ async function loadSkills() {
         console.error("Error cargando skills desde Firestore:", error);
     }
     renderSkills();
+    renderProficiencyBars();
+}
+
+function updateLanguagesCounter() {
+    const languagesCounter = document.querySelector('.stat-item:nth-child(2) .stat-number');
+    if (languagesCounter) {
+        let languageCount = 0;
+        skillsData.forEach(category => {
+            category.skills.forEach(skill => {
+                if (skill.isLanguage) {
+                    languageCount++;
+                }
+            });
+        });
+        languagesCounter.textContent = languageCount;
+    }
 }
 
 function renderSkills() {
@@ -436,7 +449,44 @@ function renderSkills() {
     });
 
     setupSkillCrudListeners();
+    updateLanguagesCounter();
     enhanceSkillItems(); // Re-apply hover effects
+}
+
+function renderProficiencyBars() {
+    const container = document.querySelector('.proficiency-bars');
+    if (!container) return;
+    container.innerHTML = '';
+
+    const allSkills = skillsData.flatMap(category => category.skills);
+
+    allSkills.forEach(skill => {
+        const proficiency = skill.proficiency || 0;
+        const item = document.createElement('div');
+        item.className = 'proficiency-item';
+        item.innerHTML = `
+            <div class="proficiency-header">
+                <span>${skill.name}</span>
+                <span class="percentage">${proficiency}%</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" style="width: ${proficiency}%"></div>
+            </div>
+        `;
+        container.appendChild(item);
+    });
+
+    // Re-aplicar la animación de las barras
+    const bars = document.querySelectorAll('.progress-fill');
+    const barsObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.animation = 'slideInLeft 1s ease-out forwards';
+                barsObserver.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.5 });
+    bars.forEach(bar => barsObserver.observe(bar));
 }
 
 function setupSkillCrudListeners() {
@@ -511,11 +561,22 @@ function openSkillItemModal(categoryId, skill = null) {
         form['skill-item-id'].value = skill.id;
         form['skill-item-name'].value = skill.name;
         form['skill-item-image-url'].value = skill.imageUrl;
+        form['skill-item-is-language'].checked = skill.isLanguage || false;
+        form['skill-item-proficiency'].value = skill.proficiency || 0;
     } else {
         title.textContent = 'Añadir Skill';
         form.reset();
+        form['skill-item-is-language'].checked = false;
+        form['skill-item-proficiency'].value = 0;
         form['skill-item-category-id'].value = categoryId;
     }
+    // Actualizar el valor del span de proficiency
+    const proficiencyValueSpan = document.getElementById('proficiency-value');
+    proficiencyValueSpan.textContent = `${form['skill-item-proficiency'].value}%`;
+    form['skill-item-proficiency'].oninput = () => {
+        proficiencyValueSpan.textContent = `${form['skill-item-proficiency'].value}%`;
+    };
+
     modal.style.display = 'flex';
 }
 
@@ -553,7 +614,9 @@ function setupSkillModals() {
         const skillData = {
             id: skillId || `skill${Date.now()}`, // ID se mantiene para la lógica interna del array
             name: form['skill-item-name'].value,
-            imageUrl: form['skill-item-image-url'].value
+            imageUrl: form['skill-item-image-url'].value,
+            isLanguage: form['skill-item-is-language'].checked,
+            proficiency: parseInt(form['skill-item-proficiency'].value, 10)
         };
         const category = skillsData.find(c => c.id === categoryId);
         if (category) {
@@ -597,7 +660,26 @@ function updateProjectsCounter() {
     if (projectsCounter) {
         const currentCount = projectsData.length;
         projectsCounter.setAttribute('data-target', currentCount);
-        projectsCounter.textContent = currentCount; // Actualiza el número visible inmediatamente
+        
+        // Reiniciar y ejecutar la animación para este contador específico
+        let current = 0;
+        const target = currentCount;
+        const increment = target / 50 > 1 ? target / 50 : 1; // Asegura que el incremento sea al menos 1
+
+        const updateCounter = () => {
+            if (current < target) {
+                current += increment;
+                if (current > target) {
+                    current = target;
+                }
+                projectsCounter.textContent = Math.floor(current);
+                requestAnimationFrame(updateCounter);
+            } else {
+                projectsCounter.textContent = target;
+            }
+        };
+        
+        updateCounter();
     }
 }
 
