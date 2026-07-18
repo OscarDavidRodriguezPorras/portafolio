@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Oscar David - Full Stack Developer</title>
     <link rel="stylesheet" href="styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
     <!-- Admin Login Modal (oculto por defecto, se abre desde el footer) -->
@@ -25,15 +25,15 @@
         <div class="navbar-container">
             <div class="navbar-logo">
                 <img src="logan.png" alt="Oscar Logo" class="logo-img">
-                <span class="logo-text">&lt;oscar.dev/&gt;</span>
+                <span class="logo-text">oscar<span class="prompt-at">@</span>dev<span class="prompt-symbol">:~$</span></span>
             </div>
             <div id="navbar-menu" class="navbar-menu">
-                <a href="#home" class="nav-link">Home</a>
-                <a href="#about" class="nav-link">About</a>
-                <a href="#skills" class="nav-link">Skills</a>
-                <a href="#projects" class="nav-link">Projects</a>
+                <a href="#home" class="nav-link">~/home</a>
+                <a href="#about" class="nav-link">~/about</a>
+                <a href="#skills" class="nav-link">~/skills</a>
+                <a href="#projects" class="nav-link">~/projects</a>
                 <button id="mode-switch-btn" class="nav-link nav-link-btn"></button>
-                <a href="#contact" class="nav-link nav-link-btn">Contacto</a>
+                <a href="#contact" class="nav-link nav-link-btn">./contact</a>
             </div>
             <button id="hamburger-btn" class="hamburger-btn">
                 <span></span><span></span><span></span>
@@ -49,7 +49,7 @@
         <section id="home" class="hero">
             <div class="hero-content">
                 <div class="hero-text">
-                    <span class="hero-greeting">Bienvenido,</span>
+                    <span class="hero-greeting"><span class="prompt-symbol">$</span> whoami</span>
                     <h1 class="hero-title">Oscar David<br><span class="gradient-text">Rodriguez Porras</span></h1>
                     <p class="hero-subtitle">Backend Developer | Bases de Datos | Python</p>
                     <p class="hero-description">Desarrollador apasionado por crear soluciones digitales innovadoras y código limpio. Especializado en web development con experiencia en Python, HTML, CSS y JavaScript.</p>
@@ -60,7 +60,14 @@
                 </div>
                 <div class="hero-image">
                     <div class="image-wrapper">
+                        <div class="terminal-chrome">
+                            <span class="terminal-dot"></span>
+                            <span class="terminal-dot"></span>
+                            <span class="terminal-dot"></span>
+                            <span class="terminal-path">perfil.png</span>
+                        </div>
                         <img src="imagen-perfil.png" alt="Oscar David" class="profile-img">
+                        <span class="status-badge"><span class="status-dot"></span>disponible para trabajar</span>
                     </div>
                 </div>
             </div>
@@ -74,6 +81,7 @@
         <!-- About Section -->
         <section id="about" class="about">
             <div class="section-header">
+                <span class="section-eyebrow"><span class="prompt-symbol">$</span> cat about.md</span>
                 <h2>Sobre Mí</h2>
                 <div class="header-line"></div>
             </div>
@@ -119,6 +127,7 @@
         <!-- Skills Section -->
         <section id="skills" class="skills">
             <div class="section-header">
+                <span class="section-eyebrow"><span class="prompt-symbol">$</span> ls skills/</span>
                 <h2>Tecnologías & Skills</h2>
                 <div class="header-line"></div>
             </div>
@@ -143,6 +152,7 @@
         <!-- Projects Section -->
         <section id="projects" class="projects">
             <div class="section-header">
+                <span class="section-eyebrow"><span class="prompt-symbol">$</span> ls projects/ -la</span>
                 <h2>Proyectos Destacados</h2>
                 <div class="header-line"></div>
             </div>
@@ -342,6 +352,7 @@
         <!-- Contact Section -->
         <section id="contact" class="contact">
             <div class="section-header">
+                <span class="section-eyebrow"><span class="prompt-symbol">$</span> ./contact.sh</span>
                 <h2>Ponte en Contacto</h2>
                 <div class="header-line"></div>
             </div>
@@ -371,7 +382,8 @@
     <!-- Footer -->
     <footer class="footer">
         <div class="footer-content">
-            <p>&copy; 2024 Oscar David Rodriguez Porras. Todos los derechos reservados.</p>
+            <p class="footer-prompt"><span class="prompt-symbol">oscar@dev:~$</span> <span class="cursor-blink">_</span></p>
+            <p>&copy; 2026 Oscar David Rodriguez Porras. Todos los derechos reservados.</p>
             <p>Diseñado y desarrollado con <span class="heart">❤️</span> por Oscar David</p>
             <p class="footer-admin-link"><a href="#" id="open-admin-login">Admin</a></p>
         </div>

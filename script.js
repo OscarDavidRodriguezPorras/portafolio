@@ -225,11 +225,11 @@ function enhanceProjectCards() {
     
     projectCards.forEach(card => {
         card.addEventListener('mouseenter', function() {
-            this.style.boxShadow = '0 25px 50px rgba(99, 102, 241, 0.3)';
+            this.style.boxShadow = '0 25px 50px rgba(95, 227, 160, 0.3)';
         });
         
         card.addEventListener('mouseleave', function() {
-            this.style.boxShadow = '0 0 0 rgba(99, 102, 241, 0)';
+            this.style.boxShadow = '0 0 0 rgba(95, 227, 160, 0)';
         });
     });
 }
@@ -246,7 +246,7 @@ function setupFormHandling() {
             const button = form.querySelector('button');
             const originalText = button.textContent;
             button.textContent = '✓ Mensaje enviado';
-            button.style.background = 'linear-gradient(135deg, #10b981, #059669)';
+            button.style.background = 'linear-gradient(135deg, #5FE3A0, #35B87A)';
             
             // Limpiar formulario
             form.reset();
