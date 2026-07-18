@@ -50,6 +50,17 @@ body {
     }
 }
 
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-40px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
 @keyframes rotateBorder {
     from {
         transform: rotate(0deg);
@@ -67,6 +78,28 @@ body {
     to {
         opacity: 1;
         transform: translateY(0);
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(40px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes zoomIn {
+    from {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
     }
 }
 
@@ -124,26 +157,53 @@ body {
     to { opacity: 1; }
 }
 
-@keyframes animated-gradient {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-}
-
-@keyframes zoomInDown {
+@keyframes zoomInUp {
     from {
         opacity: 0;
-        transform: scale(0.1) translateY(-1000px);
+        transform: scale(0.5) translateY(100px);
         animation-timing-function: cubic-bezier(0.55, 0.055, 0.675, 0.19);
     }
-    60% {
-        opacity: 1;
-        transform: scale(0.475) translateY(60px);
-        animation-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1);
-    }
-    100% {
+    to {
         opacity: 1;
         transform: scale(1) translateY(0);
+        animation-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1);
+    }
+}
+
+@keyframes flipInX {
+    from {
+        transform: perspective(400px) rotate3d(1, 0, 0, 90deg);
+        animation-timing-function: ease-in;
+        opacity: 0;
+    }
+    40% {
+        transform: perspective(400px) rotate3d(1, 0, 0, -20deg);
+        animation-timing-function: ease-in;
+    }
+    60% {
+        transform: perspective(400px) rotate3d(1, 0, 0, 10deg);
+        opacity: 1;
+    }
+    80% {
+        transform: perspective(400px) rotate3d(1, 0, 0, -5deg);
+    }
+    to {
+        transform: perspective(400px);
+    }
+}
+
+@keyframes bounceIn {
+    from, 20%, 40%, 60%, 80%, to {
+        animation-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);
+    }
+    0% { opacity: 0; transform: scale3d(.3, .3, .3); }
+    20% { transform: scale3d(1.1, 1.1, 1.1); }
+    40% { transform: scale3d(.9, .9, .9); }
+    60% { opacity: 1; transform: scale3d(1.03, 1.03, 1.03); }
+    80% { transform: scale3d(.97, .97, .97); }
+    to {
+        opacity: 1;
+        transform: scale3d(1, 1, 1);
     }
 }
 
@@ -163,6 +223,20 @@ body {
 }
 
 /* ============================================
+   ACCESIBILIDAD: respetar preferencia de movimiento reducido
+   ============================================ */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+/* ============================================
    NAVBAR PROFESIONAL
    ============================================ */
 
@@ -177,7 +251,6 @@ body {
     z-index: 1000;
     animation: slideDown 0.8s ease-out;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-    display: none; /* Oculto por defecto */
 }
 
 .navbar-container {
@@ -258,6 +331,14 @@ body {
 .nav-link-btn:hover {
     transform: translateY(-2px);
     box-shadow: 0 8px 16px rgba(99, 102, 241, 0.3);
+}
+
+#mode-switch-btn {
+    display: none;
+}
+
+body.admin-mode #mode-switch-btn {
+    display: inline-flex;
 }
 
 .hamburger-btn {
@@ -565,7 +646,6 @@ section {
 .card-icon {
     font-size: 48px;
     margin-bottom: 15px;
-    display: block;
 }
 
 .about-card h3 {
@@ -1239,14 +1319,6 @@ section {
     box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
 }
 
-.login-explanation {
-    margin-top: 40px;
-    font-size: 13px;
-    color: var(--text-muted);
-    opacity: 0.7;
-    line-height: 1.6;
-}
-
 .form-group textarea {
     resize: vertical;
     min-height: 120px;
@@ -1273,6 +1345,24 @@ section {
 .heart {
     display: inline-block;
     animation: float 2s ease-in-out infinite;
+}
+
+.footer-admin-link {
+    margin-top: 15px !important;
+}
+
+.footer-admin-link a {
+    color: var(--text-muted);
+    opacity: 0.35;
+    font-size: 12px;
+    text-decoration: none;
+    letter-spacing: 0.5px;
+    transition: opacity 0.3s ease, color 0.3s ease;
+}
+
+.footer-admin-link a:hover {
+    opacity: 0.9;
+    color: var(--primary);
 }
 
 /* ============================================
@@ -1385,16 +1475,8 @@ body:has(.project-detail:target) .scroll-progress {
         right: 10px;
     }
 
-    .login-box {
+    .admin-login-content {
         padding: 40px 20px;
-    }
-
-    .login-box h1 {
-        font-size: 22px;
-    }
-
-    .login-options {
-        flex-direction: column;
     }
 
     #password-form {
@@ -1417,78 +1499,38 @@ body:has(.project-detail:target) .scroll-progress {
     .projects-grid {
         grid-template-columns: 1fr;
     }
-
-    .login-box {
-        padding: 40px 15px;
-    }
 }
 
 /* ============================================
-   LOGIN OVERLAY
+   ADMIN LOGIN MODAL (discreto, ya no bloquea el sitio)
    ============================================ */
 
-#login-overlay {
-    position: fixed;
-    inset: 0;
-    background: linear-gradient(-45deg, var(--bg-darker), var(--bg-dark), #2c1e4a, var(--primary-dark));
-    background-size: 400% 400%;
-    z-index: 2000;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-    animation: animated-gradient 15s ease infinite;
-}
-
-.login-container {
+.admin-login-content {
+    max-width: 420px;
     text-align: center;
 }
 
-.login-box {
-    background: rgba(30, 41, 59, 0.5);
-    backdrop-filter: blur(10px);
-    padding: 60px;
-    border-radius: 20px;
-    border: 1px solid var(--border-color);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-    max-width: 500px;
-    width: 90%;
-    animation: zoomInDown 1.2s ease-out;
+.admin-login-content h2 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 22px;
+    margin-bottom: 10px;
+    color: var(--text-light);
 }
 
-.login-box.shake {
+.admin-login-content.shake {
     animation: shake 0.6s cubic-bezier(.36,.07,.19,.97) both;
 }
 
-.login-box h1 {
-    font-size: 28px;
-    margin-bottom: 15px;
-    line-height: 1.4;
-    font-family: 'JetBrains Mono', monospace;
-}
-
-.login-box p {
+.login-explanation-short {
     color: var(--text-muted);
-    margin-bottom: 30px;
-}
-
-.login-options {
-    display: flex;
-    gap: 20px;
-    justify-content: center;
+    font-size: 13px;
+    line-height: 1.6;
+    margin-bottom: 25px;
 }
 
 #password-form {
-    margin-top: 30px;
     display: flex;
     gap: 10px;
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.5s ease-out;
-}
-
-#password-form.visible {
-    max-height: 100px; /* Altura suficiente para el contenido */
 }
 
 #password-input {

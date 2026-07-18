@@ -27,10 +27,23 @@ const observerOptions = {
     rootMargin: '0px 0px -50px 0px'
 };
 
+const animationMap = {
+    'about-card': 'fadeInUp',
+    'stat-item': 'bounceIn',
+    'skill-category': 'flipInX',
+    'project-card': 'zoomIn',
+    'info-card': 'fadeInUp',
+    'proficiency-item': 'slideInLeft',
+    'section-header': 'fadeInDown' // Animación para los títulos de sección
+};
+
 const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
         if (entry.isIntersecting) {
-            entry.target.style.animation = 'fadeIn 0.8s ease-out forwards';
+            // Lógica general para todos los elementos
+            const animationClass = Array.from(entry.target.classList).find(cls => animationMap[cls]);
+            const animation = animationClass ? animationMap[animationClass] : 'fadeIn';
+            entry.target.style.animation = `${animation} 1s ease-out forwards`;
             observer.unobserve(entry.target);
         }
     });
@@ -172,25 +185,33 @@ function setupParallaxEffect() {
 
 // Animación inicial del Hero
 function setupHeroAnimation() {
+    const heroGreeting = document.querySelector('.hero-greeting');
     const heroTitle = document.querySelector('.hero-title');
+    const heroSubtitle = document.querySelector('.hero-subtitle');
     const heroDescription = document.querySelector('.hero-description');
     const heroButtons = document.querySelector('.hero-buttons');
     
+    if (heroGreeting) {
+        heroGreeting.style.animation = 'zoomInUp 0.8s ease-out 0.2s both';
+    }
     if (heroTitle) {
-        heroTitle.style.animation = 'slideInLeft 0.8s ease-out';
+        heroTitle.style.animation = 'zoomInUp 0.8s ease-out 0.4s both';
+    }
+    if (heroSubtitle) {
+        heroSubtitle.style.animation = 'zoomInUp 0.8s ease-out 0.6s both';
     }
     if (heroDescription) {
-        heroDescription.style.animation = 'slideInLeft 0.8s ease-out 0.2s both';
+        heroDescription.style.animation = 'zoomInUp 0.8s ease-out 0.8s both';
     }
     if (heroButtons) {
-        heroButtons.style.animation = 'slideInLeft 0.8s ease-out 0.4s both';
+        heroButtons.style.animation = 'zoomInUp 0.8s ease-out 1s both';
     }
 }
 
 // Observar elementos para animación
 function observeElements() {
     const elementsToObserve = document.querySelectorAll(
-        '.about-card, .project-card, .skill-category, .info-card'
+        '.section-header, .about-card, .stat-item, .skill-category, .project-card, .info-card, .proficiency-item'
     );
     
     elementsToObserve.forEach(element => {
@@ -240,113 +261,22 @@ function setupFormHandling() {
 }
 
 // ============================================
-// LOGIN BACKGROUND ANIMATION
-// ============================================
-function createLoginParticles() {
-    const overlay = document.getElementById('login-overlay');
-    const particleCount = 100; // Aumentamos el número de partículas
-    for (let i = 0; i < particleCount; i++) {
-        const particle = document.createElement('div');
-        particle.style.position = 'absolute';
-        particle.style.width = `${Math.random() * 4 + 1}px`; // Hacemos las partículas un poco más grandes
-        particle.style.height = particle.style.width;
-        particle.style.borderRadius = '50%';
-        const isPrimary = Math.random() > 0.5;
-        particle.style.background = isPrimary ? 'var(--primary)' : 'var(--secondary)';
-        particle.style.opacity = Math.random() * 0.6 + 0.3; // Aumentamos la opacidad
-        
-        const x = Math.random() * 100;
-        const y = Math.random() * 100;
-        particle.style.left = `${x}%`;
-        particle.style.top = `${y}%`;
-        
-        const duration = Math.random() * 20 + 10;
-        const delay = Math.random() * 10;
-        
-        particle.animate([
-            { transform: `translate(0, 0)` },
-            { transform: `translate(${(Math.random() - 0.5) * 200}px, ${(Math.random() - 0.5) * 200}px)` },
-            { transform: `translate(0, 0)` }
-        ], {
-            duration: duration * 1000,
-            delay: delay * 1000,
-            iterations: Infinity,
-            easing: 'ease-in-out'
-        });
-        overlay.prepend(particle);
-    }
-}
-
-// ============================================
 // LOGIN & ADMIN LOGIC
 // ============================================
+// El portafolio ahora es visible de inmediato para cualquier visitante
+// (modo invitado por defecto). El modo administrador se activa desde
+// un enlace discreto en el footer, sin bloquear la primera visita.
 
 function setupLogin() {
     const loginOverlay = document.getElementById('login-overlay');
-    const mainContent = document.querySelector('main');
-    const adminBtn = document.getElementById('admin-login-btn');
-    const navbar = document.querySelector('.navbar');
-    const guestBtn = document.getElementById('guest-login-btn');
+    const openAdminLoginBtn = document.getElementById('open-admin-login');
+    const adminLoginClose = document.getElementById('admin-login-close');
     const modeSwitchBtn = document.getElementById('mode-switch-btn');
     const passwordForm = document.getElementById('password-form');
     const passwordInput = document.getElementById('password-input');
-    const loginBox = document.querySelector('.login-box');
-
-    createLoginParticles();
-
-    // Check if already logged in as admin
-    if (sessionStorage.getItem('isAdmin') === 'true') {
-        enterAdminMode();
-        return;
-    } else if (sessionStorage.getItem('isAdmin') === 'false') {
-        enterGuestMode();
-        return;
-    }
-
-    guestBtn.addEventListener('click', () => {
-        sessionStorage.setItem('isAdmin', 'false');
-        enterGuestMode();
-    });
- 
-    adminBtn.addEventListener('click', () => {
-        passwordForm.classList.toggle('visible');
-    });
-
-    passwordForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        if (passwordInput.value === '1101261349') {
-            sessionStorage.setItem('isAdmin', 'true');
-            enterAdminMode();
-        } else {
-            // Animación de error en lugar de alert
-            loginBox.classList.add('shake');
-            passwordInput.value = '';
-            passwordInput.placeholder = 'Contraseña incorrecta, intenta de nuevo';
-
-            setTimeout(() => {
-                loginBox.classList.remove('shake');
-            }, 600); // Duración de la animación
-        }
-    });
-
-    modeSwitchBtn.addEventListener('click', () => {
-        if (sessionStorage.getItem('isAdmin') === 'true') {
-            if (confirm('¿Estás seguro de que quieres cambiar a modo invitado?')) {
-                sessionStorage.setItem('isAdmin', 'false');
-                enterGuestMode();
-            }
-        } else {
-            // Vuelve a mostrar el login para re-autenticar
-            loginOverlay.style.display = 'flex';
-            mainContent.style.display = 'none';
-            navbar.style.display = 'none';
-        }
-    });
+    const adminLoginContent = document.querySelector('.admin-login-content');
 
     function enterAdminMode() {
-        loginOverlay.style.display = 'none';
-        mainContent.style.display = 'block';
-        navbar.style.display = 'flex';
         document.body.classList.add('admin-mode');
         document.querySelectorAll('.admin-controls').forEach(el => el.style.display = 'block');
         loadProjects();
@@ -355,9 +285,6 @@ function setupLogin() {
     }
 
     function enterGuestMode() {
-        loginOverlay.style.display = 'none';
-        mainContent.style.display = 'block';
-        navbar.style.display = 'flex';
         document.body.classList.remove('admin-mode');
         document.querySelectorAll('.admin-controls').forEach(el => el.style.display = 'none');
         // Forzar la recarga de proyectos para ocultar los botones de admin
@@ -370,6 +297,59 @@ function setupLogin() {
         const isAdmin = sessionStorage.getItem('isAdmin') === 'true';
         modeSwitchBtn.textContent = isAdmin ? 'Salir al modo Invitado' : 'Modo Administrador';
     }
+
+    function openLoginModal() {
+        loginOverlay.style.display = 'flex';
+        passwordInput.focus();
+    }
+
+    function closeLoginModal() {
+        loginOverlay.style.display = 'none';
+        passwordForm.reset();
+        passwordInput.placeholder = 'Contraseña';
+    }
+
+    // Estado inicial: invitado por defecto, admin solo si ya se autenticó en esta sesión
+    if (sessionStorage.getItem('isAdmin') === 'true') {
+        enterAdminMode();
+    } else {
+        enterGuestMode();
+    }
+
+    openAdminLoginBtn?.addEventListener('click', (e) => {
+        e.preventDefault();
+        openLoginModal();
+    });
+
+    adminLoginClose?.addEventListener('click', (e) => {
+        e.preventDefault();
+        closeLoginModal();
+    });
+
+    passwordForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        if (passwordInput.value === '1101261349') {
+            sessionStorage.setItem('isAdmin', 'true');
+            closeLoginModal();
+            enterAdminMode();
+        } else {
+            // Animación de error (se conserva del diseño original)
+            adminLoginContent.classList.add('shake');
+            passwordInput.value = '';
+            passwordInput.placeholder = 'Contraseña incorrecta, intenta de nuevo';
+
+            setTimeout(() => {
+                adminLoginContent.classList.remove('shake');
+            }, 600);
+        }
+    });
+
+    modeSwitchBtn?.addEventListener('click', () => {
+        if (confirm('¿Estás seguro de que quieres salir del modo administrador?')) {
+            sessionStorage.setItem('isAdmin', 'false');
+            enterGuestMode();
+        }
+    });
 }
 
 // ============================================
@@ -859,13 +839,6 @@ function setupProjectModal() {
     });
 }
 
-function setupLoginPasswordForm() {
-    const passwordForm = document.getElementById('password-form');
-    if (passwordForm.classList.contains('hidden')) {
-        passwordForm.classList.remove('hidden');
-    }
-}
-
 function updateTrainingMonths() {
     const startDate = new Date('2024-01-01');
     const currentDate = new Date();
@@ -911,10 +884,7 @@ document.addEventListener('DOMContentLoaded', () => {
     setupFormHandling();
     setupProjectModal();
     setupProjectCrudListeners();
-    setupLoginPasswordForm();
     setupHamburgerMenu();
-    loadProjects(); // Cargar proyectos al inicio
-    loadSkills();
     setupSkillModals();
 });
 
@@ -933,10 +903,5 @@ window.addEventListener('load', () => {
 window.addEventListener('hashchange', () => {
     const navbar = document.querySelector('.navbar');
     const isProjectDetailOpen = window.location.hash.startsWith('#detalle-');
-
-    if (isProjectDetailOpen) {
-        navbar.style.display = 'none';
-    } else if (document.getElementById('login-overlay').style.display !== 'flex') {
-        navbar.style.display = 'flex';
-    }
+    navbar.style.display = isProjectDetailOpen ? 'none' : 'flex';
 });

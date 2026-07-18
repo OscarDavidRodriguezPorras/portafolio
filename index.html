@@ -8,24 +8,16 @@
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <!-- Login Overlay -->
-    <div id="login-overlay">
-        <div class="login-container">
-            <div class="login-box">
-                <h1>Bienvenido al portafolio de<br><span class="gradient-text">Oscar Rodriguez</span></h1>
-                <p>Por favor, elige quién eres:</p>
-                <div class="login-options">
-                    <button id="admin-login-btn" class="btn btn-primary">Oscar Rodriguez</button>
-                    <button id="guest-login-btn" class="btn btn-primary">Invitado</button>
-                </div>
-                <form id="password-form">
-                    <input type="password" id="password-input" placeholder="Ingresa la contraseña">
-                    <button type="submit" class="btn btn-primary">Entrar</button>
-                </form>
-                <p class="login-explanation">
-                    Implementé este sistema para gestionar mi portafolio de forma dinámica. El modo administrador me permite añadir y editar proyectos en tiempo real, sin necesidad de modificar el código fuente.
-                </p>
-            </div>
+    <!-- Admin Login Modal (oculto por defecto, se abre desde el footer) -->
+    <div id="login-overlay" class="project-detail">
+        <div class="detail-content admin-login-content">
+            <a href="#" id="admin-login-close" class="detail-close">&times;</a>
+            <h2>Acceso administrador</h2>
+            <p class="login-explanation-short">Ingresa la contraseña para gestionar proyectos y skills en tiempo real.</p>
+            <form id="password-form">
+                <input type="password" id="password-input" placeholder="Contraseña" required>
+                <button type="submit" class="btn btn-primary">Entrar</button>
+            </form>
         </div>
     </div>
     <!-- Navbar -->
@@ -52,7 +44,7 @@
     <!-- Progress Bar -->
     <div class="scroll-progress"></div>
 
-    <main style="display: none;">
+    <main>
         <!-- Hero Section -->
         <section id="home" class="hero">
             <div class="hero-content">
@@ -381,10 +373,10 @@
         <div class="footer-content">
             <p>&copy; 2024 Oscar David Rodriguez Porras. Todos los derechos reservados.</p>
             <p>Diseñado y desarrollado con <span class="heart">❤️</span> por Oscar David</p>
+            <p class="footer-admin-link"><a href="#" id="open-admin-login">Admin</a></p>
         </div>
     </footer>
 
     <script type="module" src="script.js"></script>
 </body>
 </html>
-        
