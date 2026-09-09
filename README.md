@@ -24,13 +24,13 @@ Portafolio profesional desarrollado con **HTML5, CSS3 y JavaScript Vanilla** en 
 ![Inicio](/img/pagina_principal.png)
 
 ### Sobre Mí
-![Sobre Mi](./sobre-mi.png)
+![Sobre Mi](/img/sobre_mi.png)
 
 ### Skills Dinámicas
-![Skills](./skills.png)
+![Skills](/img/skills.png)
 
 ### Proyectos Destacados
-![Proyectos](./proyectos.png)
+![Proyectos](/img/proyectos.png)
 
 ---
 
