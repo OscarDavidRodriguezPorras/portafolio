@@ -3,7 +3,7 @@
 // ============================================
 // Cambia esta URL por la de tu backend cuando lo despliegues
 // (por ejemplo: "https://tu-backend.onrender.com/api")
-export const API_BASE = "http://localhost:4000/api";
+export const API_BASE = "https://portafolio-9n0f.onrender.com/api";
 
 function getToken() {
   return sessionStorage.getItem("adminToken");
