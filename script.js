@@ -1,12 +1,19 @@
-import { db } from "./firebase.js";
 import {
-  collection,
-  addDoc,
-  getDocs,
-  doc,
-  updateDoc,
-  deleteDoc
-} from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
+  login,
+  clearToken,
+  hasToken,
+  fetchSkills,
+  createSkillCategory,
+  updateSkillCategory,
+  deleteSkillCategory,
+  createSkillItem,
+  updateSkillItem,
+  deleteSkillItem,
+  fetchProjects,
+  createProject,
+  updateProject,
+  deleteProject,
+} from "./api.js";
 // ============================================
 // PORTAFOLIO PROFESIONAL - SCRIPT AVANZADO
 // ============================================
@@ -310,9 +317,10 @@ function setupLogin() {
     }
 
     // Estado inicial: invitado por defecto, admin solo si ya se autenticó en esta sesión
-    if (sessionStorage.getItem('isAdmin') === 'true') {
+    if (sessionStorage.getItem('isAdmin') === 'true' && hasToken()) {
         enterAdminMode();
     } else {
+        sessionStorage.setItem('isAdmin', 'false');
         enterGuestMode();
     }
 
@@ -326,13 +334,14 @@ function setupLogin() {
         closeLoginModal();
     });
 
-    passwordForm.addEventListener('submit', (e) => {
+    passwordForm.addEventListener('submit', async (e) => {
         e.preventDefault();
-        if (passwordInput.value === '1101261349') {
+        try {
+            await login(passwordInput.value);
             sessionStorage.setItem('isAdmin', 'true');
             closeLoginModal();
             enterAdminMode();
-        } else {
+        } catch (error) {
             // Animación de error (se conserva del diseño original)
             adminLoginContent.classList.add('shake');
             passwordInput.value = '';
@@ -347,6 +356,7 @@ function setupLogin() {
     modeSwitchBtn?.addEventListener('click', () => {
         if (confirm('¿Estás seguro de que quieres salir del modo administrador?')) {
             sessionStorage.setItem('isAdmin', 'false');
+            clearToken();
             enterGuestMode();
         }
     });
@@ -359,13 +369,10 @@ function setupLogin() {
 let skillsData = [];
 async function loadSkills() {
     try {
-        const querySnapshot = await getDocs(collection(db, "skillCategories"));
-        skillsData = [];
-        querySnapshot.forEach((doc) => {
-            skillsData.push({ id: doc.id, ...doc.data() });
-        });
+        const data = await fetchSkills();
+        skillsData = data.categories || [];
     } catch (error) {
-        console.error("Error cargando skills desde Firestore:", error);
+        console.error("Error cargando skills desde el backend:", error);
     }
     renderSkills();
     renderProficiencyBars();
@@ -480,8 +487,13 @@ function setupSkillCrudListeners() {
     document.querySelectorAll('.delete-skill-category').forEach(btn => btn.addEventListener('click', async e => {
         if (confirm('¿Seguro que quieres eliminar esta categoría y todas sus skills?')) {
             const categoryId = e.target.closest('.skill-category').dataset.id;
-            await deleteDoc(doc(db, "skillCategories", categoryId));
-            loadSkills();
+            try {
+                await deleteSkillCategory(categoryId);
+                loadSkills();
+            } catch (error) {
+                console.error("Error eliminando categoría:", error);
+                alert("Hubo un error al eliminar la categoría.");
+            }
         }
     }));
 
@@ -503,14 +515,12 @@ function setupSkillCrudListeners() {
             const skillEl = e.target.closest('.skill-item');
             const skillId = skillEl.dataset.id;
             const categoryId = skillEl.dataset.categoryId;
-            const category = skillsData.find(c => c.id === categoryId);
-            if (category) {
-                category.skills = category.skills.filter(s => s.id !== skillId);
-                const categoryDocRef = doc(db, "skillCategories", categoryId);
-                await updateDoc(categoryDocRef, {
-                    skills: category.skills
-                });
+            try {
+                await deleteSkillItem(categoryId, skillId);
                 loadSkills();
+            } catch (error) {
+                console.error("Error eliminando skill:", error);
+                alert("Hubo un error al eliminar la skill.");
             }
         }
     }));
@@ -571,15 +581,15 @@ function setupSkillModals() {
         const categoryName = form['skill-category-name'].value;
         try {
             if (categoryId) {
-                const categoryDocRef = doc(db, "skillCategories", categoryId);
-                await updateDoc(categoryDocRef, { name: categoryName });
+                await updateSkillCategory(categoryId, categoryName);
             } else {
-                await addDoc(collection(db, "skillCategories"), { name: categoryName, skills: [] });
+                await createSkillCategory(categoryName);
             }
+            loadSkills();
         } catch (error) {
             console.error("Error guardando categoría:", error);
+            alert("Hubo un error al guardar la categoría.");
         }
-        loadSkills();
         categoryModal.style.display = 'none';
     });
 
@@ -592,24 +602,21 @@ function setupSkillModals() {
         const categoryId = form['skill-item-category-id'].value;
         const skillId = form['skill-item-id'].value;
         const skillData = {
-            id: skillId || `skill${Date.now()}`, // ID se mantiene para la lógica interna del array
             name: form['skill-item-name'].value,
             imageUrl: form['skill-item-image-url'].value,
             isLanguage: form['skill-item-is-language'].checked,
             proficiency: parseInt(form['skill-item-proficiency'].value, 10)
         };
-        const category = skillsData.find(c => c.id === categoryId);
-        if (category) {
-            const newSkills = [...category.skills];
+        try {
             if (skillId) { // Editar
-                const index = newSkills.findIndex(s => s.id === skillId);
-                if (index > -1) newSkills[index] = skillData;
+                await updateSkillItem(categoryId, skillId, skillData);
             } else { // Añadir
-                newSkills.push(skillData);
+                await createSkillItem(categoryId, skillData);
             }
-            const categoryDocRef = doc(db, "skillCategories", categoryId);
-            await updateDoc(categoryDocRef, { skills: newSkills });
             loadSkills();
+        } catch (error) {
+            console.error("Error guardando skill:", error);
+            alert("Hubo un error al guardar la skill.");
         }
         itemModal.style.display = 'none';
     });
@@ -623,15 +630,12 @@ let projectsData = [];
 
 async function loadProjects() {
     try {
-        const querySnapshot = await getDocs(collection(db, "proyectos"));
-        projectsData = [];
-        querySnapshot.forEach((doc) => {
-            projectsData.push({ id: doc.id, ...doc.data() });
-        });
+        const data = await fetchProjects();
+        projectsData = data.projects || [];
         renderProjects();
         updateProjectsCounter();
     } catch (error) {
-        console.error("No se pudieron cargar los proyectos desde Firebase:", error);
+        console.error("No se pudieron cargar los proyectos desde el backend:", error);
     }
 }
 
@@ -761,7 +765,7 @@ function setupProjectCrudListeners() {
                 const card = e.target.closest('.project-card');
                 const projectId = card.dataset.id;
                 try {
-                    await deleteDoc(doc(db, "proyectos", projectId));
+                    await deleteProject(projectId);
                     await loadProjects(); // Recargar para reflejar la eliminación
                 } catch (error) {
                     console.error("Error al eliminar el proyecto:", error);
@@ -811,7 +815,7 @@ function setupProjectModal() {
         e.preventDefault();
         const form = e.target;
         const projectId = form['project-id'].value;
-        const projectData = { // No incluimos el ID aquí, Firestore lo maneja
+        const projectData = { // No incluimos el ID aquí, el backend lo maneja
             title: form['project-title'].value,
             tag: form['project-tag'].value,
             description: form['project-description'].value,
@@ -822,12 +826,10 @@ function setupProjectModal() {
         };
 
         try {
-            let response;
             if (projectId) { // Editando
-                const projectDocRef = doc(db, "proyectos", projectId);
-                await updateDoc(projectDocRef, projectData);
+                await updateProject(projectId, projectData);
             } else { // Añadiendo
-                await addDoc(collection(db, "proyectos"), projectData);
+                await createProject(projectData);
             }
             await loadProjects(); // Recargar los proyectos para ver los cambios
         } catch (error) {
