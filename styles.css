@@ -1133,8 +1133,8 @@ section {
     background: var(--bg-card);
     border-radius: 10px;
     padding: 40px;
-    max-width: 900px;
-    width: 100%;
+    max-width: 1200px;
+    width: 92%;
     max-height: 85vh;
     overflow-y: auto;
     position: relative;
@@ -1167,7 +1167,7 @@ section {
 
 .detail-grid {
     display: grid;
-    grid-template-columns: 1fr 1.5fr;
+    grid-template-columns: 320px 1fr;
     gap: 40px;
     align-items: start;
 }
