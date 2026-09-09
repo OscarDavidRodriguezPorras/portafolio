@@ -102,30 +102,91 @@ export const API_BASE = "http://localhost:4000/api";
 ```
 por la URL de tu backend cuando lo despliegues (paso 7).
 
-## 7. Desplegar en producción
+## 7. Desplegar en producción (Render)
 
-Este backend necesita un servidor que corra Node de forma persistente (no un
-hosting estático). Opciones gratuitas/sencillas: **Render**, **Railway** o
-**Fly.io**.
+Este backend necesita un servidor que corra Node de forma persistente (no
+un hosting estático). Vamos a usar **Render** (tiene plan gratuito).
 
-Pasos generales (con Render, por ejemplo):
-1. Sube la carpeta `backend/` a un repositorio de GitHub (NO subas
-   `service-account.json` ni `.env` — agrégalos a `.gitignore`).
-2. En Render: **New → Web Service**, conecta el repo.
-   - Build command: `npm install`
-   - Start command: `npm start`
-3. En la sección **Environment**, agrega las mismas variables del `.env`
-   (para `GOOGLE_APPLICATION_CREDENTIALS`, puedes pegar el contenido del
-   JSON completo en una variable de entorno tipo "Secret File", o usar la
-   variante de credenciales JSON en línea — dime si quieres que te ayude a
-   adaptar `config/drive.js` para leer las credenciales desde una variable
-   de entorno en vez de un archivo).
-4. Una vez desplegado, copia la URL pública (ej.
-   `https://portafolio-backend.onrender.com`) y actualiza `API_BASE` en
-   `frontend/api.js` a `https://portafolio-backend.onrender.com/api`.
-5. Actualiza `FRONTEND_URL` en las variables de entorno de Render para que
-   apunte al dominio real donde vive tu portafolio (GitHub Pages, Vercel,
-   etc.), así CORS solo permite tu sitio.
+### 7.1 Sube el código a GitHub
+
+1. Crea un repositorio nuevo en [github.com](https://github.com) (puede ser
+   privado).
+2. Sube tu carpeta `backend/` (o todo `mi_portafolio/` si la tienes anidada
+   ahí dentro — Render te va a dejar elegir la subcarpeta más adelante).
+3. **Verifica que `.env` y `service-account.json` NO se suban** — el
+   `.gitignore` que incluí ya los excluye, pero confírmalo revisando los
+   archivos que aparecen en tu commit antes de subir.
+
+Si nunca has usado git desde la terminal, puedes usar
+[GitHub Desktop](https://desktop.github.com/) — es una app con interfaz
+gráfica que hace lo mismo sin comandos.
+
+### 7.2 Crea el servicio en Render
+
+1. Ve a [render.com](https://render.com) y crea una cuenta (puedes usar tu
+   cuenta de GitHub para entrar más rápido).
+2. Clic en **New → Web Service**.
+3. Conecta tu repositorio de GitHub.
+4. Si tu `backend/` está anidada dentro de otra carpeta (ej.
+   `mi_portafolio/backend`), en **Root Directory** escribe: `backend`
+   (o la ruta relativa correspondiente). Si subiste solo el contenido de
+   `backend/` como raíz del repo, deja este campo vacío.
+5. Configura:
+   - **Build Command:** `npm install`
+   - **Start Command:** `npm start`
+   - **Instance Type:** Free
+6. NO le des a "Create" todavía — primero baja a la sección **Environment
+   Variables** (siguiente paso).
+
+### 7.3 Configura las variables de entorno en Render
+
+Agrega estas variables (botón **Add Environment Variable**):
+
+| Variable | Valor |
+|---|---|
+| `ADMIN_PASSWORD` | tu contraseña de administrador |
+| `JWT_SECRET` | la misma cadena larga que usas en local |
+| `DRIVE_SKILLS_FILE_ID` | el ID de tu skills.json |
+| `DRIVE_PROJECTS_FILE_ID` | el ID de tu projects.json |
+| `FRONTEND_URL` | la URL donde publiques tu portafolio (ej. `https://tuusuario.github.io`). Si aún no la tienes, deja `*` por ahora y actualízalo después. |
+| `GOOGLE_SERVICE_ACCOUNT_JSON` | pega aquí el **contenido completo** de tu `service-account.json` (todo el JSON, en una sola variable) |
+
+Para la última: abre tu `service-account.json` local con el Bloc de notas,
+selecciona todo (Ctrl+A), cópialo (Ctrl+C), y pégalo tal cual como el
+valor de esa variable en Render. No necesitas quitarle los saltos de línea
+ni nada, Render acepta texto largo en el valor.
+
+(`PORT` no hace falta configurarlo — Render lo asigna automáticamente y
+nuestro `server.js` ya usa `process.env.PORT` si existe.)
+
+### 7.4 Despliega
+
+1. Clic en **Create Web Service**. Render va a instalar dependencias y
+   arrancar el servidor — puedes ver el progreso en los logs, en vivo.
+2. Cuando termine, verás una URL pública como
+   `https://portafolio-backend-xxxx.onrender.com`.
+3. Pruébala: abre `https://tu-url.onrender.com/api/health` en el navegador,
+   deberías ver `{"status":"ok"}`.
+
+⚠️ En el plan gratuito, Render "duerme" el servicio tras ~15 minutos sin
+uso, y la primera petición después de eso tarda unos segundos extra en
+responder mientras despierta. Es normal, no es un error.
+
+### 7.5 Conecta tu frontend a la URL de producción
+
+En tu `frontend/api.js`, cambia:
+```js
+export const API_BASE = "http://localhost:4000/api";
+```
+por:
+```js
+export const API_BASE = "https://tu-url.onrender.com/api";
+```
+
+Y si en el paso 7.3 dejaste `FRONTEND_URL=*`, ahora que ya tengas tu
+portafolio publicado (GitHub Pages, Vercel, Netlify...), vuelve a Render →
+tu servicio → Environment → actualiza `FRONTEND_URL` con la URL real de tu
+portafolio, para que CORS solo permita peticiones desde ahí.
 
 ## Endpoints disponibles
 
