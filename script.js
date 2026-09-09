@@ -841,12 +841,23 @@ function setupProjectModal() {
     });
 }
 
+// Calcula los meses de formación transcurridos, sumando un mes nuevo
+// justo el día 26 de cada mes (no el día 1).
 function updateTrainingMonths() {
-    const startDate = new Date('2024-01-01');
+    // Ajusta este día si tu fecha real de inicio fue otra.
+    const startDate = new Date(2026, 0, 26); // 26 de enero de 2026
     const currentDate = new Date();
-    const yearDiff = currentDate.getFullYear() - startDate.getFullYear();
-    const monthDiff = currentDate.getMonth() - startDate.getMonth();
-    const totalMonths = yearDiff * 12 + monthDiff + 1;
+
+    let totalMonths =
+        (currentDate.getFullYear() - startDate.getFullYear()) * 12 +
+        (currentDate.getMonth() - startDate.getMonth());
+
+    // Si todavía no llega el día 26 del mes actual, ese mes no cuenta como completo.
+    if (currentDate.getDate() < startDate.getDate()) {
+        totalMonths -= 1;
+    }
+
+    totalMonths = Math.max(totalMonths, 0);
 
     const monthsCounter = document.getElementById('training-months-counter');
     if (monthsCounter) {
@@ -875,8 +886,8 @@ document.addEventListener('DOMContentLoaded', () => {
     setupHeroAnimation();
     setupSmoothScroll();
     highlightActiveNavLink();
-    animateCounters();
     updateTrainingMonths();
+    animateCounters();
     observeElements();
     enhanceSkillItems();
     enhanceProjectCards();

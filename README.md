@@ -1,23 +1,52 @@
-# 💻 Portafolio Web Dinámico
+# 💻 Portafolio Web Full-Stack
 
-Portafolio profesional desarrollado con **HTML5, CSS3 y JavaScript Vanilla**, diseñado para mostrar información personal, habilidades técnicas, proyectos destacados y medios de contacto de manera moderna, responsiva y completamente administrable.
-
-A diferencia de un portafolio estático tradicional, este proyecto está conectado a **Firebase**, permitiendo gestionar contenido en tiempo real sin necesidad de modificar el código fuente.
+Portafolio profesional desarrollado con **HTML5, CSS3 y JavaScript Vanilla** en el frontend, y un **backend propio en Node.js + Express** conectado a **Google Drive** como base de datos. Todo el contenido (skills, tecnologías y proyectos) se administra en tiempo real desde la propia interfaz web, sin tocar el código fuente.
 
 ---
 
 ## 🚀 Características
 
-- 🎨 Diseño moderno y responsivo.
-- 🌙 Interfaz con temática oscura.
-- 👤 Sección de presentación personal.
-- 📖 Apartado "Sobre Mí".
-- 🛠️ Gestión dinámica de Skills.
-- 📊 Barras de nivel de dominio.
-- 📂 Gestión dinámica de proyectos.
+- 🎨 Diseño moderno, responsivo y con temática oscura (estilo terminal).
+- 👤 Sección de presentación personal y "Sobre Mí".
+- 🛠️ Gestión dinámica de Skills, organizadas por categorías (Backend, Frontend, Base de Datos, Tools & Platforms).
+- 📊 Barras de nivel de dominio por tecnología.
+- 📂 Gestión dinámica de proyectos destacados, con imagen, resumen, descripción detallada y link a GitHub.
+- 🔐 Modo administrador protegido con autenticación por token (JWT) — la contraseña nunca viaja expuesta en el navegador.
+- ☁️ Backend propio (Node.js + Express) desplegado en Render.
+- 📄 Google Drive como base de datos: los datos se guardan como archivos JSON en la nube, editables desde el panel admin y sin costo.
 - 📱 Compatible con dispositivos móviles.
-- ☁️ Integración con Firebase.
-- 🔄 Actualización de contenido en tiempo real.
+
+---
+
+## 🖼️ Vista Previa
+
+### Página Principal
+![Inicio](/img/pagina_principal.png)
+
+### Sobre Mí
+![Sobre Mi](./sobre-mi.png)
+
+### Skills Dinámicas
+![Skills](./skills.png)
+
+### Proyectos Destacados
+![Proyectos](./proyectos.png)
+
+---
+
+## 🏗️ Arquitectura
+
+```
+┌─────────────────────┐        HTTPS / REST API        ┌──────────────────────┐        Google Drive API        ┌─────────────────┐
+│   Frontend           │  ───────────────────────────►  │   Backend             │  ───────────────────────────►  │   Google Drive    │
+│   (GitHub Pages)     │  ◄───────────────────────────  │   (Render)             │  ◄───────────────────────────  │   skills.json      │
+│   HTML + CSS + JS     │                                 │   Node.js + Express    │                                 │   projects.json    │
+└─────────────────────┘                                 └──────────────────────┘                                 └─────────────────┘
+```
+
+- **Frontend:** archivos estáticos servidos por GitHub Pages. `script.js` consume la API a través de `api.js`.
+- **Backend:** API REST en Node.js/Express, con autenticación JWT para las operaciones de escritura (crear, editar, eliminar).
+- **Base de datos:** dos archivos JSON (`skills.json` y `projects.json`) alojados en Google Drive, leídos y actualizados por el backend mediante una cuenta de servicio de Google.
 
 ---
 
@@ -26,93 +55,82 @@ A diferencia de un portafolio estático tradicional, este proyecto está conecta
 ### Frontend
 - HTML5
 - CSS3
-- JavaScript (Vanilla)
+- JavaScript (Vanilla, ES Modules)
 
-### Backend as a Service
-- Firebase Firestore
+### Backend
+- Node.js
+- Express.js
+- JSON Web Tokens (JWT) para autenticación
+- Google APIs (googleapis) para la integración con Drive
+
+### Base de Datos
+- Google Drive (archivos JSON como almacenamiento)
+
+### Infraestructura
+- GitHub Pages (hosting del frontend)
+- Render (hosting del backend)
 
 ### Control de Versiones
-- Git
-- GitHub
-
----
-
-## ☁️ Integración con Firebase
-
-El proyecto utiliza **Firebase Firestore** como base de datos en la nube.
-
-Gracias a esta integración es posible:
-
-- Añadir nuevas categorías de habilidades.
-- Agregar nuevas tecnologías.
-- Editar habilidades existentes.
-- Eliminar habilidades.
-- Añadir nuevos proyectos.
-- Editar proyectos existentes.
-- Eliminar proyectos.
-- Sincronizar cambios en tiempo real.
-
-Todo esto se realiza directamente desde la interfaz web, sin necesidad de editar archivos HTML, CSS o JavaScript manualmente.
-
----
-
-## 📸 Vista Previa
-
-### Página Principal
-
-![Inicio](./pagina-principal.png)
-
-### Sobre Mí
-
-![Sobre Mi](./sobre-mi.png)
-
-### Skills Dinámicas
-
-![Skills](./skills.png)
-
-### Proyectos Destacados
-
-![Proyectos](./proyectos.png)
-
----
-
-## 📂 Estructura del Proyecto
-
-```bash
-📦 portafolio
-├── index.html
-├── styles.css
-├── script.js
-├── firebase.js
-├── perfil.png
-├── imagen-perfil.png
-├── logan.png
-└── README.md
-```
+- Git & GitHub
 
 ---
 
 ## ⚙️ Funcionalidades Administrativas
 
-El sistema cuenta con un modo administrador que permite:
+Al iniciar sesión como administrador (protegido por contraseña + token JWT), es posible:
 
 ### Gestión de Skills
-
-- Crear categorías.
-- Agregar tecnologías.
-- Editar información.
-- Eliminar elementos.
+- Crear, editar y eliminar categorías (Backend, Frontend, Base de Datos, Tools & Platforms, etc.).
+- Añadir, editar y eliminar tecnologías dentro de cada categoría, con ícono, nombre y porcentaje de dominio.
 
 ### Gestión de Proyectos
+- Crear nuevos proyectos con título, tecnologías usadas, link al repositorio, imagen, resumen y descripción detallada.
+- Editar o eliminar proyectos existentes.
 
-- Crear nuevos proyectos.
-- Subir imágenes.
-- Agregar descripción.
-- Asignar tecnologías utilizadas.
-- Actualizar información existente.
-- Eliminar proyectos.
+Todos los cambios se guardan automáticamente en Google Drive a través del backend, y se reflejan al instante en la página sin necesidad de recargar.
 
-Todos los cambios se almacenan automáticamente en Firebase.
+---
+
+## 📂 Estructura del Proyecto
+
+```
+📦 mi-portafolio
+├── index.html
+├── styles.css
+├── script.js
+├── api.js
+├── imagen-perfil.png, logan.png, etc.
+│
+└── backend/
+    ├── server.js
+    ├── routes/
+    │   ├── auth.js
+    │   ├── skills.js
+    │   └── projects.js
+    ├── services/
+    │   ├── dataStore.js
+    │   └── driveStore.js
+    ├── middleware/
+    │   └── requireAdmin.js
+    ├── config/
+    │   └── drive.js
+    ├── package.json
+    └── README.md   ← instrucciones detalladas de configuración del backend
+```
+
+---
+
+## 🔌 API
+
+| Método | Ruta | Auth | Descripción |
+|---|---|---|---|
+| POST | `/api/auth/login` | No | Inicia sesión de administrador |
+| GET | `/api/skills` | No | Lista categorías y skills |
+| POST/PUT/DELETE | `/api/skills/categories/...` | Sí | CRUD de categorías y skills |
+| GET | `/api/projects` | No | Lista proyectos |
+| POST/PUT/DELETE | `/api/projects/...` | Sí | CRUD de proyectos |
+
+Ver detalle completo de endpoints en [`backend/README.md`](./backend/README.md).
 
 ---
 
@@ -120,10 +138,10 @@ Todos los cambios se almacenan automáticamente en Firebase.
 
 Este portafolio fue desarrollado con el objetivo de:
 
-- Mostrar mis habilidades como desarrollador.
-- Aplicar conocimientos de HTML, CSS y JavaScript.
-- Implementar una arquitectura conectada a servicios en la nube.
-- Aprender integración de bases de datos NoSQL mediante Firebase.
+- Mostrar mis habilidades como desarrollador full-stack.
+- Aplicar conocimientos de HTML, CSS, JavaScript, Node.js y Express.
+- Implementar una arquitectura desacoplada frontend/backend con autenticación.
+- Integrar una API externa (Google Drive) como solución de almacenamiento.
 - Facilitar la actualización del contenido sin modificar el código fuente.
 
 ---
@@ -136,8 +154,7 @@ Este portafolio fue desarrollado con el objetivo de:
 - Bases de Datos
 - Python Developer
 
-GitHub:
-https://github.com/OscarDavidRodriguezPorras
+GitHub: [OscarDavidRodriguezPorras](https://github.com/OscarDavidRodriguezPorras)
 
 ---
 
