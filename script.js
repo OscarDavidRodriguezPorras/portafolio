@@ -363,6 +363,26 @@ function setupLogin() {
 }
 
 // ============================================
+// AVISO DE CARGA DEL BACKEND
+// ============================================
+let backendNoticeVisible = true;
+
+function hideBackendNotice() {
+    if (!backendNoticeVisible) return;
+    backendNoticeVisible = false;
+    const notice = document.getElementById('backend-notice');
+    if (notice) notice.classList.add('hidden');
+}
+
+function setupBackendNotice() {
+    const closeBtn = document.getElementById('backend-notice-close');
+    closeBtn?.addEventListener('click', hideBackendNotice);
+    // Seguro por si el backend tarda demasiado o alguna petición queda colgada:
+    // ocultamos el aviso a los 60s pase lo que pase, para no dejarlo pegado.
+    setTimeout(hideBackendNotice, 60000);
+}
+
+// ============================================
 // SKILLS CRUD LOGIC
 // ============================================
 
@@ -374,6 +394,7 @@ async function loadSkills() {
     } catch (error) {
         console.error("Error cargando skills desde el backend:", error);
     }
+    hideBackendNotice();
     renderSkills();
     renderProficiencyBars();
 }
@@ -637,6 +658,7 @@ async function loadProjects() {
     } catch (error) {
         console.error("No se pudieron cargar los proyectos desde el backend:", error);
     }
+    hideBackendNotice();
 }
 
 function updateProjectsCounter() {
@@ -882,6 +904,7 @@ function setupHamburgerMenu() {
 
 // Inicialización
 document.addEventListener('DOMContentLoaded', () => {
+    setupBackendNotice();
     setupLogin();
     setupHeroAnimation();
     setupSmoothScroll();

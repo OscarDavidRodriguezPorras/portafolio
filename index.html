@@ -8,6 +8,19 @@
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
+    <!-- Aviso de carga del backend (visible de inmediato, se oculta cuando los datos terminan de cargar) -->
+    <div id="backend-notice" class="backend-notice" role="status" aria-live="polite">
+        <div class="backend-notice-content">
+            <span class="backend-notice-spinner" aria-hidden="true"></span>
+            <p>
+                <strong>Aviso:</strong> este sitio se conecta a un servidor gratuito que puede tardar
+                hasta <strong>1 minuto</strong> en activarse tras un período de inactividad.
+                Por favor, espere un momento mientras el contenido completo termina de cargar.
+                Agradecemos su paciencia.
+            </p>
+            <button id="backend-notice-close" class="backend-notice-close" type="button" aria-label="Cerrar aviso">&times;</button>
+        </div>
+    </div>
     <!-- Admin Login Modal (oculto por defecto, se abre desde el footer) -->
     <div id="login-overlay" class="project-detail">
         <div class="detail-content admin-login-content">
@@ -51,7 +64,7 @@
                 <div class="hero-text">
                     <span class="hero-greeting"><span class="prompt-symbol">$</span> whoami</span>
                     <h1 class="hero-title">Oscar David<br><span class="gradient-text">Rodriguez Porras</span></h1>
-                    <p class="hero-subtitle">Backend Developer | Bases de Datos | Python</p>
+                    <p class="hero-subtitle">Backend Developer | Bases de Datos | Java</p>
                     <p class="hero-description">Desarrollador apasionado por crear soluciones digitales innovadoras y código limpio. Especializado en web development con experiencia en Python, HTML, CSS y JavaScript.</p>
                     <div class="hero-buttons">
                         <a href="#projects" class="btn btn-primary">Ver Mis Proyectos</a>

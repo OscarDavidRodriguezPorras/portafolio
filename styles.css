@@ -1673,3 +1673,108 @@ body:has(.project-detail:target) .scroll-progress {
     background: rgba(95, 227, 160, 0.1);
     box-shadow: 0 0 0 3px rgba(95, 227, 160, 0.1);
 }
+/* ============================================
+   AVISO DE CARGA DEL BACKEND
+   ============================================ */
+
+.backend-notice {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 2000;
+    background: var(--bg-darker);
+    border-bottom: 1px solid var(--primary);
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.4);
+    animation: backendNoticeSlideDown 0.4s ease-out;
+}
+
+.backend-notice.hidden {
+    display: none;
+}
+
+@keyframes backendNoticeSlideDown {
+    from {
+        transform: translateY(-100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.backend-notice-content {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 14px 50px 14px 20px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    position: relative;
+}
+
+.backend-notice-spinner {
+    flex-shrink: 0;
+    width: 18px;
+    height: 18px;
+    border: 2px solid rgba(95, 227, 160, 0.25);
+    border-top-color: var(--primary);
+    border-radius: 50%;
+    animation: backendNoticeSpin 0.8s linear infinite;
+}
+
+@keyframes backendNoticeSpin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.backend-notice-content p {
+    margin: 0;
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--text-light);
+}
+
+.backend-notice-content strong {
+    color: var(--primary);
+}
+
+.backend-notice-close {
+    position: absolute;
+    top: 50%;
+    right: 14px;
+    transform: translateY(-50%);
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    font-size: 22px;
+    line-height: 1;
+    cursor: pointer;
+    padding: 4px 8px;
+    transition: color 0.2s ease;
+}
+
+.backend-notice-close:hover {
+    color: var(--primary);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .backend-notice {
+        animation: none;
+    }
+    .backend-notice-spinner {
+        animation: none;
+    }
+}
+
+@media (max-width: 600px) {
+    .backend-notice-content {
+        padding: 12px 44px 12px 16px;
+        gap: 10px;
+    }
+    .backend-notice-content p {
+        font-size: 12px;
+    }
+}
