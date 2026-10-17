@@ -751,7 +751,7 @@ function formatDescription(text) {
         const headingMatch = trimmed.match(/^(\d+)\.\s+(.+?):\s*$/);
         if (headingMatch) {
             if (inList) { html.push('</ul>'); inList = false; }
-            html.push(<h5 class="desc-section-heading">. :</h5>);
+            html.push('<h5 class="desc-section-heading">' + headingMatch[1] + '. ' + escapeHtml(headingMatch[2]) + ':</h5>');
             continue;
         }
 
@@ -759,13 +759,13 @@ function formatDescription(text) {
         const bulletMatch = trimmed.match(/^[-–]\s+(.+)$/);
         if (bulletMatch) {
             if (!inList) { html.push('<ul class="desc-list">'); inList = true; }
-            html.push(<li></li>);
+            html.push('<li>' + inlineFormat(bulletMatch[1]) + '</li>');
             continue;
         }
 
         // Regular paragraph line
         if (inList) { html.push('</ul>'); inList = false; }
-        html.push(<p></p>);
+        html.push('<p>' + inlineFormat(trimmed) + '</p>');
     }
 
     if (inList) html.push('</ul>');
