@@ -726,6 +726,65 @@ function renderProjects() {
     setupProjectCrudListeners();
 }
 
+/**
+ * Converts plain-text project descriptions (with newlines, "- item" lists,
+ * "1. Section:" headings, and **bold**) into structured HTML.
+ * This runs entirely in the browser — no backend changes needed.
+ */
+function formatDescription(text) {
+    if (!text) return '';
+
+    const lines = text.split(/\r?\n/);
+    const html = [];
+    let inList = false;
+
+    for (let i = 0; i < lines.length; i++) {
+        const raw = lines[i];
+        const trimmed = raw.trim();
+
+        if (trimmed === '') {
+            if (inList) { html.push('</ul>'); inList = false; }
+            continue;
+        }
+
+        // Numbered section heading: "1. Title:" or "1. Title"
+        const headingMatch = trimmed.match(/^(\d+)\.\s+(.+?):\s*$/);
+        if (headingMatch) {
+            if (inList) { html.push('</ul>'); inList = false; }
+            html.push(<h5 class="desc-section-heading">. :</h5>);
+            continue;
+        }
+
+        // Bullet item: lines starting with "- " or "– "
+        const bulletMatch = trimmed.match(/^[-–]\s+(.+)$/);
+        if (bulletMatch) {
+            if (!inList) { html.push('<ul class="desc-list">'); inList = true; }
+            html.push(<li></li>);
+            continue;
+        }
+
+        // Regular paragraph line
+        if (inList) { html.push('</ul>'); inList = false; }
+        html.push(<p></p>);
+    }
+
+    if (inList) html.push('</ul>');
+    return html.join('\n');
+}
+
+/** Escapes HTML special characters to prevent XSS. */
+function escapeHtml(str) {
+    return str
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+}
+
+/** Converts **bold** markers and escapes the rest of an inline string. */
+function inlineFormat(str) {
+    return escapeHtml(str).replace(/\*\*(.+?)\*\*/g, (_, m) => '<strong>' + m + '</strong>');
+}
 function renderProjectDetails() {
     // Eliminar modales de detalle existentes para no duplicarlos, excepto el modal de edición
     document.querySelectorAll('.project-detail[id^="detalle-"]:not(#project-modal)').forEach(modal => modal.remove());
@@ -747,7 +806,7 @@ function renderProjectDetails() {
                     </div>
                     <div class="detail-text">
                         <h2>${project.title}</h2>
-                        <p class="detail-description">${project.detailDescription}</p>
+                        <div class="detail-description">${formatDescription(project.detailDescription)}</div>
                         
                         <h4>Tecnologías Utilizadas</h4>
                         <div class="detail-tech">
