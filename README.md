@@ -21,16 +21,16 @@ Portafolio profesional desarrollado con **HTML5, CSS3 y JavaScript Vanilla** en 
 ## 🖼️ Vista Previa
 
 ### Página Principal
-![Inicio](/img/pagina_principal.png)
+![Inicio](/assets/images/screenshots/pagina_principal.png)
 
 ### Sobre Mí
-![Sobre Mi](/img/sobre_mi.png)
+![Sobre Mi](/assets/images/screenshots/sobre_mi.png)
 
 ### Skills Dinámicas
-![Skills](/img/skills.png)
+![Skills](/assets/images/screenshots/skills.png)
 
 ### Proyectos Destacados
-![Proyectos](/img/proyectos.png)
+![Proyectos](/assets/images/screenshots/proyectos.png)
 
 ---
 
@@ -44,7 +44,7 @@ Portafolio profesional desarrollado con **HTML5, CSS3 y JavaScript Vanilla** en 
 └─────────────────────┘                                 └──────────────────────┘                                 └─────────────────┘
 ```
 
-- **Frontend:** archivos estáticos servidos por GitHub Pages. `script.js` consume la API a través de `api.js`.
+- **Frontend:** archivos estáticos servidos por GitHub Pages. `assets/js/script.js` consume la API a través de `assets/js/api.js`.
 - **Backend:** API REST en Node.js/Express, con autenticación JWT para las operaciones de escritura (crear, editar, eliminar).
 - **Base de datos:** dos archivos JSON (`skills.json` y `projects.json`) alojados en Google Drive, leídos y actualizados por el backend mediante una cuenta de servicio de Google.
 
@@ -96,10 +96,23 @@ Todos los cambios se guardan automáticamente en Google Drive a través del back
 ```
 📦 mi-portafolio
 ├── index.html
-├── styles.css
-├── script.js
-├── api.js
-├── imagen-perfil.png, logan.png, etc.
+├── README.md
+├── .gitignore
+├── LICENSE
+├── assets/
+│   ├── css/
+│   │   └── styles.css
+│   ├── js/
+│   │   ├── script.js        ← lógica del frontend
+│   │   └── api.js            ← cliente de la API REST
+│   └── images/
+│       ├── imagen-perfil.png
+│       ├── logan.png
+│       └── screenshots/      ← capturas para el README
+│           ├── pagina_principal.png
+│           ├── sobre_mi.png
+│           ├── skills.png
+│           └── proyectos.png
 │
 └── backend/
     ├── server.js
@@ -115,7 +128,7 @@ Todos los cambios se guardan automáticamente en Google Drive a través del back
     ├── config/
     │   └── drive.js
     ├── package.json
-    └── README.md   ← instrucciones detalladas de configuración del backend
+    └── README.md              ← instrucciones detalladas de configuración del backend
 ```
 
 ---
@@ -160,4 +173,4 @@ GitHub: [OscarDavidRodriguezPorras](https://github.com/OscarDavidRodriguezPorras
 
 ## 📄 Licencia
 
-Este proyecto es de uso personal y académico.
+Este proyecto está bajo la licencia MIT. Consulta el archivo [`LICENSE`](./LICENSE) para más detalles.

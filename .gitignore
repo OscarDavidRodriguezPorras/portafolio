@@ -1,0 +1,43 @@
+﻿
+# ============================================
+# Root .gitignore - Portafolio Oscar David
+# ============================================
+
+# ---- Node (backend) ----
+backend/node_modules/
+backend/.env
+backend/service-account.json
+backend/*.log
+
+# ---- Environment & secrets ----
+.env
+.env.local
+.env.*.local
+*.pem
+*.key
+service-account*.json
+
+# ---- OS files ----
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# ---- Editor / IDE ----
+*.swp
+*.swo
+*~
+.idea/
+*.iml
+
+# ---- Logs ----
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ---- Dependencies (root, if ever added) ----
+node_modules/
+
+# ---- Build artifacts (if ever added) ----
+dist/
+build/

@@ -1,5 +1,5 @@
 // ============================================
-// CLIENTE DE API - reemplaza a firebase.js
+// CLIENTE DE API - comunicación con el backend (Node.js + Express)
 // ============================================
 // Cambia esta URL por la de tu backend cuando lo despliegues
 // (por ejemplo: "https://tu-backend.onrender.com/api")

@@ -96,7 +96,7 @@ curl http://localhost:4000/api/health
 
 ## 6. Conectar el frontend
 
-En `frontend/api.js`, cambia:
+En `assets/js/api.js`, cambia:
 ```js
 export const API_BASE = "http://localhost:4000/api";
 ```
@@ -211,7 +211,7 @@ Las rutas marcadas "Sí" requieren el header
 ## Notas de seguridad
 
 - La contraseña de administrador ya **no** vive en el código del navegador
-  (antes estaba escrita en texto plano en `script.js`). Ahora se valida en
+  (antes estaba escrita en texto plano en `assets/js/script.js`). Ahora se valida en
   el servidor y solo se emite un token temporal (12h) si es correcta.
 - El archivo `service-account.json` da acceso de escritura a tu Drive: no lo
   subas nunca a un repositorio público. Agrégalo a `.gitignore`.
