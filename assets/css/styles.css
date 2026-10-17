@@ -1831,3 +1831,71 @@ body:has(.project-detail:target) .scroll-progress {
         font-size: 12px;
     }
 }
+/* ============================================
+   TARJETAS DE CONTACTO - DISEÑO NEON
+   ============================================ */
+
+/* Email — cyan */
+.card--email {
+    border-color: #00d4ff;
+    box-shadow: 0 0 10px rgba(0, 212, 255, 0.15), inset 0 0 20px rgba(0, 212, 255, 0.03);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+}
+.card--email:hover {
+    border-color: #00d4ff;
+    box-shadow: 0 0 22px rgba(0, 212, 255, 0.45), 0 0 45px rgba(0, 212, 255, 0.15), inset 0 0 25px rgba(0, 212, 255, 0.06);
+    transform: translateY(-6px);
+}
+.card--email .info-icon { filter: drop-shadow(0 0 6px rgba(0, 212, 255, 0.7)); }
+
+/* GitHub — green */
+.card--github {
+    border-color: #39ff14;
+    box-shadow: 0 0 10px rgba(57, 255, 20, 0.15), inset 0 0 20px rgba(57, 255, 20, 0.03);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+}
+.card--github:hover {
+    border-color: #39ff14;
+    box-shadow: 0 0 22px rgba(57, 255, 20, 0.45), 0 0 45px rgba(57, 255, 20, 0.15), inset 0 0 25px rgba(57, 255, 20, 0.06);
+    transform: translateY(-6px);
+}
+.card--github .info-icon { filter: drop-shadow(0 0 6px rgba(57, 255, 20, 0.7)); }
+
+/* LinkedIn — blue */
+.card--linkedin {
+    border-color: #4d9fff;
+    box-shadow: 0 0 10px rgba(77, 159, 255, 0.15), inset 0 0 20px rgba(77, 159, 255, 0.03);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+}
+.card--linkedin:hover {
+    border-color: #4d9fff;
+    box-shadow: 0 0 22px rgba(77, 159, 255, 0.45), 0 0 45px rgba(77, 159, 255, 0.15), inset 0 0 25px rgba(77, 159, 255, 0.06);
+    transform: translateY(-6px);
+}
+.card--linkedin .info-icon { filter: drop-shadow(0 0 6px rgba(77, 159, 255, 0.7)); }
+
+/* Discord — purple */
+.card--discord {
+    border-color: #b44fff;
+    box-shadow: 0 0 10px rgba(180, 79, 255, 0.15), inset 0 0 20px rgba(180, 79, 255, 0.03);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+}
+.card--discord:hover {
+    border-color: #b44fff;
+    box-shadow: 0 0 22px rgba(180, 79, 255, 0.45), 0 0 45px rgba(180, 79, 255, 0.15), inset 0 0 25px rgba(180, 79, 255, 0.06);
+    transform: translateY(-6px);
+}
+.card--discord .info-icon { filter: drop-shadow(0 0 6px rgba(180, 79, 255, 0.7)); }
+
+/* Overrides for neon cards: link text matches neon color on hover */
+.card--email a:hover    { color: #00d4ff; }
+.card--github a:hover   { color: #39ff14; }
+.card--linkedin a:hover { color: #4d9fff; }
+.card--discord a:hover  { color: #b44fff; }
+
+/* Fix text overflow on contact links */
+.info-card a {
+    display: block;
+    word-break: break-word;
+    overflow-wrap: break-word;
+}
