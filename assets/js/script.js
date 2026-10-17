@@ -56,14 +56,32 @@ const observer = new IntersectionObserver((entries) => {
     });
 }, observerOptions);
 
+// Anima un contador individual desde 0 hasta target
+function animateSingleCounter(el, target) {
+    el.setAttribute('data-target', target);
+    let current = 0;
+    const increment = Math.max(target / 50, 1);
+    const update = () => {
+        current += increment;
+        if (current >= target) {
+            el.textContent = target;
+        } else {
+            el.textContent = Math.floor(current);
+            requestAnimationFrame(update);
+        }
+    };
+    update();
+}
+
 // Contador de Estadísticas
 function animateCounters() {
     const counters = document.querySelectorAll('.stat-number');
 
-    // Excluir el contador de proyectos, ya que se maneja por separado
-    const filteredCounters = Array.from(counters).filter(c => c.id !== 'projects-counter');
-
+    // Excluir contadores dinámicos (proyectos y lenguajes): se animan tras la carga del backend
     counters.forEach(counter => {
+        if (counter.id === 'projects-counter') return; // animado por updateProjectsCounter()
+        const isLanguageCounter = counter.closest('.stat-item:nth-child(2)') !== null;
+        if (isLanguageCounter) return; // animado por updateLanguagesCounter()
         const target = parseInt(counter.getAttribute('data-target'));
         let current = 0;
         const increment = target / 30;
@@ -405,12 +423,10 @@ function updateLanguagesCounter() {
         let languageCount = 0;
         skillsData.forEach(category => {
             category.skills.forEach(skill => {
-                if (skill.isLanguage) {
-                    languageCount++;
-                }
+                if (skill.isLanguage) languageCount++;
             });
         });
-        languagesCounter.textContent = languageCount;
+        animateSingleCounter(languagesCounter, languageCount);
     }
 }
 
@@ -664,28 +680,7 @@ async function loadProjects() {
 function updateProjectsCounter() {
     const projectsCounter = document.getElementById('projects-counter');
     if (projectsCounter) {
-        const currentCount = projectsData.length;
-        projectsCounter.setAttribute('data-target', currentCount);
-        
-        // Reiniciar y ejecutar la animación para este contador específico
-        let current = 0;
-        const target = currentCount;
-        const increment = target / 50 > 1 ? target / 50 : 1; // Asegura que el incremento sea al menos 1
-
-        const updateCounter = () => {
-            if (current < target) {
-                current += increment;
-                if (current > target) {
-                    current = target;
-                }
-                projectsCounter.textContent = Math.floor(current);
-                requestAnimationFrame(updateCounter);
-            } else {
-                projectsCounter.textContent = target;
-            }
-        };
-        
-        updateCounter();
+        animateSingleCounter(projectsCounter, projectsData.length);
     }
 }
 
